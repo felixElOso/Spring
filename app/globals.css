@@ -1,0 +1,218 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* Design system tokens */
+  --color-cream: #F4F4EF;
+  --color-ink: #21262A;
+  --color-coral: #FF808C;
+  /* Watermelon ramp — watermelon-50 === coral */
+  --color-watermelon-0:   #FFF6F6;
+  --color-watermelon-10:  #FFE7E7;
+  --color-watermelon-20:  #FFD4D8;
+  --color-watermelon-30:  #FFB8BE;
+  --color-watermelon-40:  #FF9BA4;
+  --color-watermelon-50:  #FF808C;
+  --color-watermelon-60:  #F7576C;
+  --color-watermelon-70:  #DB334D;
+  --color-watermelon-80:  #B61A37;
+  --color-watermelon-90:  #8F1229;
+  --color-watermelon-100: #6E0B1E;
+  --color-watermelon-110: #4F0513;
+  --color-watermelon-120: #40030E;
+  /* Tofu ramp — tofu-100 === cream */
+  --color-tofu-100: #F4F4EF;
+  --color-tofu-110: #EAEAE3;
+  --color-tofu-120: #DFDFD8;
+  /* Spearmint ramp */
+  --color-spearmint-0:   #ECFFF7;
+  --color-spearmint-10:  #D7FDEF;
+  --color-spearmint-20:  #A6FDE2;
+  --color-spearmint-30:  #50FBD4;
+  --color-spearmint-40:  #00EEC5;
+  --color-spearmint-50:  #00D5B0;
+  --color-spearmint-60:  #00B797;
+  --color-spearmint-70:  #00A286;
+  --color-spearmint-80:  #00856D;
+  --color-spearmint-90:  #006A56;
+  --color-spearmint-100: #005244;
+  --color-spearmint-110: #003E31;
+  --color-spearmint-120: #002B21;
+  /* Pepper (neutral) ramp — pepper-120 === ink */
+  --color-pepper-0:   #F0F4F6;
+  --color-pepper-10:  #E2E9ED;
+  --color-pepper-20:  #D5DEE3;
+  --color-pepper-30:  #C3CED5;
+  --color-pepper-40:  #ADBAC2;
+  --color-pepper-50:  #9AA7B0;
+  --color-pepper-60:  #859299;
+  --color-pepper-70:  #727E85;
+  --color-pepper-80:  #5D686F;
+  --color-pepper-90:  #4C555B;
+  --color-pepper-100: #3C4348;
+  --color-pepper-110: #2B3135;
+  --color-pepper-120: #21262A;
+  --color-pepper-130: #181C1F;
+  --font-sans: var(--font-avenir), 'Helvetica Neue', Arial, sans-serif;
+  --max-w-content: 1680px;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+}
+
+/* ─── Design panel tokens ───────────────────────────────────────────────────
+   These are the live-editable defaults. The design panel overrides them via
+   an injected <style> tag. Changing these here changes the starting state.   */
+:root {
+  --dp-grid-cols: 2;
+  --dp-col-gap: 3rem;
+  --dp-row-gap: 5rem;
+  --dp-section-px: clamp(1.5rem, 3.5vw, 4.5rem);
+}
+
+:root {
+  --background: #F4F4EF;
+  --foreground: #21262A;
+  --card: #FFFFFF;
+  --card-foreground: #21262A;
+  --popover: #FFFFFF;
+  --popover-foreground: #21262A;
+  --primary: #21262A;
+  --primary-foreground: #F4F4EF;
+  --secondary: #EAEAE5;
+  --secondary-foreground: #21262A;
+  --muted: #EAEAE5;
+  --muted-foreground: #6B7177;
+  --accent: #FF808C;
+  --accent-foreground: #FFFFFF;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: rgba(33, 38, 42, 0.12);
+  --input: rgba(33, 38, 42, 0.12);
+  --ring: #FF808C;
+  --radius: 0.5rem;
+}
+
+/* ─── Dark mode tokens ───────────────────────────────────────────────────────── */
+/* Surfaces use the Figma pepper ramp. Coral stays the same in both modes.      */
+
+.dark {
+  --background:            #181C1F;  /* pepper-130 — deepest surface            */
+  --foreground:            #F4F4EF;  /* cream                                   */
+  --card:                  #21262A;  /* pepper-120 / ink — elevated card        */
+  --card-foreground:       #F4F4EF;
+  --popover:               #21262A;
+  --popover-foreground:    #F4F4EF;
+  --primary:               #F4F4EF;  /* inverted: cream on dark bg              */
+  --primary-foreground:    #21262A;
+  --secondary:             #2B3135;  /* pepper-110                              */
+  --secondary-foreground:  #F4F4EF;
+  --muted:                 #2B3135;  /* pepper-110                              */
+  --muted-foreground:      #727E85;  /* pepper-70                               */
+  --accent:                #FF808C;  /* coral — unchanged                       */
+  --accent-foreground:     #FFFFFF;
+  --destructive:           oklch(0.704 0.191 22.216);
+  --border:                rgba(244, 244, 239, 0.10);
+  --input:                 rgba(244, 244, 239, 0.10);
+  --ring:                  #FF808C;
+}
+
+/* ─── Named grid patterns ────────────────────────────────────────────────────── */
+/* Keep in sync with GRID_PATTERNS in app/design-system/page.tsx               */
+
+@layer components {
+  /* 1-col mobile → N-col desktop (N controlled by --dp-grid-cols). */
+  .grid-project {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    column-gap: var(--dp-col-gap, 3rem);
+    row-gap: var(--dp-row-gap, 5rem);
+  }
+
+  /* Horizontal padding driven by the design panel token. */
+  .section-pad {
+    padding-left: var(--dp-section-px, clamp(1.5rem, 6.5vw, 6rem));
+    padding-right: var(--dp-section-px, clamp(1.5rem, 6.5vw, 6rem));
+  }
+
+  /* Equal halves — stacks on mobile, side-by-side on large screens. */
+  .grid-content-split {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 4rem;          /* gap-16 */
+  }
+
+  /* Dense editorial grid. Tight gap groups images together. */
+  .grid-gallery-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;          /* gap-4 */
+  }
+
+  /* 2-col on mobile, collapses to 4-col on desktop. */
+  .grid-gallery-4 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;          /* gap-4 */
+  }
+}
+
+@media (min-width: 768px) {   /* md */
+  .grid-project    { grid-template-columns: repeat(var(--dp-grid-cols, 2), minmax(0, 1fr)); }
+  .grid-gallery-4  { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {  /* lg */
+  .grid-content-split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6rem;          /* gap-24 */
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #FF808C;
+    color: #FFFFFF;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Smooth theme transition on color-bearing properties only. */
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

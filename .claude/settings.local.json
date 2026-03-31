@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Read(//Users/fstekolshch/Desktop/Claude Code-Spring/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(source ~/.zshrc)",
+      "Bash(source ~/.zprofile)",
+      "Bash(echo \"PATH: $PATH\")",
+      "Read(//Users/fstekolshch/**)",
+      "Bash(find / -name node -maxdepth 8 -type f)",
+      "Bash(python3:*)",
+      "WebFetch(domain:www.instrument.com)",
+      "WebFetch(domain:buck.co)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(mkdir -p \"app/\\(site\\)\")",
+      "Bash(mv app/about app/design-system app/projects app/page.tsx app/loading.tsx app/robots.ts app/sitemap.ts \"app/\\(site\\)/\")"
+    ]
+  }
+}
