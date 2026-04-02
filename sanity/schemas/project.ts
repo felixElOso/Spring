@@ -96,6 +96,7 @@ export const project = defineType({
         { type: 'textBlock' },
         { type: 'statsBlock' },
         { type: 'headingBlock' },
+        { type: 'imageMosaicBlock' },
       ],
     }),
     defineField({

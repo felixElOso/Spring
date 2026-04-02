@@ -8,6 +8,7 @@ import { animationBlock } from './blocks/animationBlock'
 import { textBlock } from './blocks/textBlock'
 import { statsBlock } from './blocks/statsBlock'
 import { headingBlock } from './blocks/headingBlock'
+import { imageMosaicBlock } from './blocks/imageMosaicBlock'
 
 export const schemaTypes = [
   project,
@@ -20,4 +21,5 @@ export const schemaTypes = [
   textBlock,
   statsBlock,
   headingBlock,
+  imageMosaicBlock,
 ]

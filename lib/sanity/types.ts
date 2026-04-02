@@ -101,7 +101,22 @@ export interface HeadingBlock {
   layout: 'contained' | 'full-width' | 'half'
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock
+export interface ImageMosaicImage {
+  _key: string
+  image: SanityImage
+  caption?: string
+  altText?: string
+}
+
+export interface ImageMosaicBlock {
+  _type: 'imageMosaicBlock'
+  _key: string
+  images: ImageMosaicImage[]
+  largeImagePosition: 'left' | 'right'
+  layout: BlockLayout
+}
+
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock
 
 export interface Project {
   _id: string

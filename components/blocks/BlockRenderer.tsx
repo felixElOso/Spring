@@ -6,6 +6,7 @@ import { AnimationBlock } from './AnimationBlock'
 import { TextBlockRenderer } from './TextBlock'
 import { StatsBlock } from './StatsBlock'
 import { HeadingBlock } from './HeadingBlock'
+import { ImageMosaicBlock } from './ImageMosaicBlock'
 import type { ContentBlock } from '@/lib/sanity/types'
 
 interface Props {
@@ -69,6 +70,8 @@ function renderBlock(block: ContentBlock) {
       return <StatsBlock key={block._key} block={block} />
     case 'headingBlock':
       return <HeadingBlock key={block._key} block={block} />
+    case 'imageMosaicBlock':
+      return <ImageMosaicBlock key={block._key} block={block} />
     default:
       return null
   }
