@@ -106,13 +106,13 @@ export interface ImageMosaicImage {
   image: SanityImage
   caption?: string
   altText?: string
+  size: 'large' | 'small'
 }
 
 export interface ImageMosaicBlock {
   _type: 'imageMosaicBlock'
   _key: string
   images: ImageMosaicImage[]
-  largeImagePosition: 'left' | 'right'
   layout: BlockLayout
 }
 

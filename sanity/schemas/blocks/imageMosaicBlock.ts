@@ -9,7 +9,7 @@ export const imageMosaicBlock = defineType({
       name: 'images',
       title: 'Images',
       type: 'array',
-      description: 'Add exactly 3 images. The first image is the large one, the other two are stacked.',
+      description: 'Add 2–4 images. Set each to Large or Small to control sizing. Large images take up more space; small ones stack together.',
       of: [
         {
           type: 'object',
@@ -17,23 +17,32 @@ export const imageMosaicBlock = defineType({
             { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
             { name: 'caption', type: 'string', title: 'Caption' },
             { name: 'altText', type: 'string', title: 'Alt Text' },
+            {
+              name: 'size',
+              type: 'string',
+              title: 'Size',
+              options: {
+                list: [
+                  { title: 'Large', value: 'large' },
+                  { title: 'Small', value: 'small' },
+                ],
+              },
+              initialValue: 'large',
+            },
           ],
+          preview: {
+            select: { title: 'altText', media: 'image', size: 'size' },
+            prepare({ title, media, size }) {
+              return {
+                title: title || 'Image',
+                subtitle: size === 'large' ? 'Large' : 'Small',
+                media,
+              }
+            },
+          },
         },
       ],
-      validation: (Rule) => Rule.min(3).max(3),
-    }),
-    defineField({
-      name: 'largeImagePosition',
-      title: 'Large Image Position',
-      type: 'string',
-      description: 'Which side the large image appears on.',
-      options: {
-        list: [
-          { title: 'Left', value: 'left' },
-          { title: 'Right', value: 'right' },
-        ],
-      },
-      initialValue: 'left',
+      validation: (Rule) => Rule.min(2).max(4),
     }),
     defineField({
       name: 'layout',
