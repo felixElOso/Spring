@@ -21,15 +21,8 @@ export default async function HomePage() {
 
   return (
     <div className="pt-16">
-      {/* Hero */}
-      <section className="max-w-content mx-auto section-pad pt-24 pb-32">
-        <h1 className="text-[clamp(3rem,8vw,7rem)] font-medium leading-none tracking-tight text-foreground">
-          Work
-        </h1>
-      </section>
-
       {/* Project grid */}
-      <section className="max-w-content mx-auto section-pad pb-32">
+      <section className="max-w-content mx-auto section-pad pt-24 pb-32">
         {projects.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {[1, 2, 3, 4].map((i) => (
