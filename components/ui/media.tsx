@@ -167,7 +167,7 @@ export function Media({
   const content = (
     <>
       {/* ── Media surface ─────────────────────────────────── */}
-      <div className={cn('relative w-full overflow-hidden bg-muted', MEDIA_RATIO[aspectRatio])}>
+      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio])}>
 
         {/* Image */}
         {type === 'image' && src && aspectRatio === 'auto' && (
