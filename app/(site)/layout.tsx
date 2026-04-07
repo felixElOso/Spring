@@ -1,6 +1,5 @@
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
-import { DesignPanelLoader } from '@/components/ui/design-panel-loader'
 
 export default function SiteLayout({
   children,
@@ -12,7 +11,6 @@ export default function SiteLayout({
       <Nav />
       <main>{children}</main>
       <Footer />
-      <DesignPanelLoader />
     </>
   )
 }

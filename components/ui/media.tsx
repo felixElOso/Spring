@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 
 export type MediaType   = 'image' | 'video' | 'animation'
 export type MediaLayout = 'full-bleed' | 'full-width' | 'contained' | 'thumbnail'
-export type MediaRatio  = '16/9' | '4/3' | '1/1' | '3/2' | '21/9' | '9/16'
+export type MediaRatio  = '16/9' | '4/3' | '1/1' | '3/2' | '21/9' | '9/16' | 'auto'
 
 export interface MediaProps {
   // ── Content ────────────────────────────────────────────
@@ -70,6 +70,7 @@ export const MEDIA_RATIO: Record<MediaRatio, string> = {
   '3/2':  'aspect-[3/2]',
   '21/9': 'aspect-[21/9]',
   '9/16': 'aspect-[9/16]',
+  'auto': '',
 }
 
 function defaultSizes(layout: MediaLayout): string {
@@ -169,7 +170,18 @@ export function Media({
       <div className={cn('relative w-full overflow-hidden bg-muted', MEDIA_RATIO[aspectRatio])}>
 
         {/* Image */}
-        {type === 'image' && src && (
+        {type === 'image' && src && aspectRatio === 'auto' && (
+          <Image
+            src={src}
+            alt={alt}
+            width={0}
+            height={0}
+            sizes={sizes ?? defaultSizes(layout)}
+            className="w-full h-auto"
+            priority={priority}
+          />
+        )}
+        {type === 'image' && src && aspectRatio !== 'auto' && (
           <Image
             src={src}
             alt={alt}

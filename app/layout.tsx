@@ -6,12 +6,12 @@ import { ThemeProvider } from '@/lib/theme'
 const avenir = localFont({
   src: [
     {
-      path: '../public/fonts/AvenirNext-Regular.woff2',
+      path: '../public/fonts/AvenirNextforINTUIT-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/AvenirNext-Medium.woff2',
+      path: '../public/fonts/AvenirNextforINTUIT-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
@@ -36,7 +36,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={avenir.variable} suppressHydrationWarning>
-      <body className="font-sans bg-background text-foreground antialiased">
+      <body className="font-sans bg-background text-foreground antialiased" suppressHydrationWarning>
         <ThemeProvider>
           {children}
         </ThemeProvider>

@@ -8,6 +8,7 @@ import { Tag } from "@/components/ui/tag"
 import { Card, CardImage, CardContent, CardTitle, CardDescription } from "@/components/ui/card"
 import { Divider } from "@/components/ui/divider"
 import { Stats } from "@/components/ui/stats"
+import { StatTile } from "@/components/ui/stat-tile"
 import { Button } from "@/components/ui/button"
 
 export default function ComponentsPage() {
@@ -135,6 +136,22 @@ export default function ComponentsPage() {
               { value: "3", label: "Global offices" },
             ]}
           />
+        </div>
+      </SectionWrapper>
+
+      {/* ── Stat Tile ──────────────────────────────────────────────── */}
+      <SectionWrapper>
+        <SectionHeading title="Stat Tile" subtitle="Card-based stat display for key metrics. Horizontally scrollable in context." />
+        <div className="flex gap-4 md:gap-6 overflow-x-auto overflow-y-visible scrollbar-hide">
+          <div className="flex-shrink-0 w-[360px]">
+            <StatTile value="50%" label="First Time Users as a % of Total Base" description="First-time investors grew to over 50% of the total user base within two years." />
+          </div>
+          <div className="flex-shrink-0 w-[360px]">
+            <StatTile value="12M+" label="Active Users" description="Monthly active users across all platforms and regions." />
+          </div>
+          <div className="flex-shrink-0 w-[360px]">
+            <StatTile value="4.9" label="App Store Rating" />
+          </div>
         </div>
       </SectionWrapper>
 

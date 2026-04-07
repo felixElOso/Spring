@@ -27,6 +27,7 @@ export const imageBlock = defineType({
       type: 'string',
       options: {
         list: [
+          { title: 'Auto  · Original',  value: 'auto' },
           { title: '16:9  · Widescreen', value: '16/9' },
           { title: '4:3   · Standard',   value: '4/3'  },
           { title: '3:2   · Photo',      value: '3/2'  },

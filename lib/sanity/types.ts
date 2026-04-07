@@ -85,11 +85,13 @@ export interface StatsBlockItem {
   _key: string
   value: string
   label: string
+  description?: string
 }
 
 export interface StatsBlock {
   _type: 'statsBlock'
   _key: string
+  title?: string
   items: StatsBlockItem[]
   layout: 'contained' | 'full-width'
 }

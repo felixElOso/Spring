@@ -6,6 +6,12 @@ export const statsBlock = defineType({
   type: 'object',
   fields: [
     defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      initialValue: 'Impact',
+    }),
+    defineField({
       name: 'items',
       title: 'Stats',
       type: 'array',
@@ -24,6 +30,11 @@ export const statsBlock = defineType({
               title: 'Label',
               type: 'string',
               validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'string',
             }),
           ],
           preview: {
