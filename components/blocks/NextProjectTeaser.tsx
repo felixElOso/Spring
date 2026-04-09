@@ -13,7 +13,7 @@ interface NextProjectTeaserProps {
 
 export function NextProjectTeaser({ project }: NextProjectTeaserProps) {
   const coverUrl = project.coverImage
-    ? urlFor(project.coverImage).width(1600).auto("format").fit("max").url()
+    ? urlFor(project.coverImage).width(2400).quality(90).auto("format").fit("max").url()
     : null
 
   return (
@@ -29,6 +29,7 @@ export function NextProjectTeaser({ project }: NextProjectTeaserProps) {
           fill
           className="object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500"
           sizes="100vw"
+          quality={90}
         />
       )}
       <div className="relative z-10 mx-auto max-w-[var(--max-w-content)] section-pad py-20 md:py-28 flex flex-col md:flex-row md:items-center md:justify-between gap-8">

@@ -40,8 +40,9 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
 
   const coverImageUrl = project.coverImage
     ? urlFor(project.coverImage)
-        .width(isLarge ? 1600 : 1200)
-        .height(isLarge ? 1200 : 900)
+        .width(isLarge ? 2400 : 1600)
+        .height(isLarge ? 1800 : 1200)
+        .quality(90)
         .auto('format')
         .fit('max')
         .url()
@@ -49,7 +50,7 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
 
   // Resolve animation cover
   const gifUrl = project.coverAnimation?.animationType === 'gif' && project.coverAnimation.gifImage
-    ? urlFor(project.coverAnimation.gifImage).auto('format').url()
+    ? urlFor(project.coverAnimation.gifImage).quality(90).auto('format').fit('max').url()
     : null
   const lottieUrl = project.coverAnimation?.animationType === 'lottie'
     ? project.coverAnimation.lottieFile?.asset?.url

@@ -37,7 +37,7 @@ export function HeroSection({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-            className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed"
+            className="mt-6 max-w-2xl text-lg md:text-xl lg:text-2xl text-muted-foreground leading-7"
           >
             {subtitle}
           </motion.p>

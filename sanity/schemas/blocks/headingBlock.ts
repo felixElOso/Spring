@@ -25,4 +25,15 @@ export const headingBlock = defineType({
       initialValue: 'contained',
     }),
   ],
+  preview: {
+    select: {
+      text: 'text',
+    },
+    prepare({ text }) {
+      return {
+        title: text || 'Untitled heading',
+        subtitle: 'Heading',
+      }
+    },
+  },
 })

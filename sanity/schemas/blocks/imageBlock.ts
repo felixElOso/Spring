@@ -52,4 +52,18 @@ export const imageBlock = defineType({
       initialValue: 'full-width',
     }),
   ],
+  preview: {
+    select: {
+      caption: 'caption',
+      altText: 'altText',
+      image: 'image',
+    },
+    prepare({ caption, altText, image }) {
+      return {
+        title: caption || altText || 'Untitled image',
+        subtitle: 'Image',
+        media: image,
+      }
+    },
+  },
 })

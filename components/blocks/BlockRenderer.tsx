@@ -7,6 +7,8 @@ import { TextBlockRenderer } from './TextBlock'
 import { StatsBlock } from './StatsBlock'
 import { HeadingBlock } from './HeadingBlock'
 import { ImageMosaicBlock } from './ImageMosaicBlock'
+import { MarqueeGalleryBlock } from './MarqueeGalleryBlock'
+import { QuoteBlock } from './QuoteBlock'
 import type { ContentBlock } from '@/lib/sanity/types'
 
 interface Props {
@@ -72,6 +74,10 @@ function renderBlock(block: ContentBlock) {
       return <HeadingBlock key={block._key} block={block} />
     case 'imageMosaicBlock':
       return <ImageMosaicBlock key={block._key} block={block} />
+    case 'marqueeGalleryBlock':
+      return <MarqueeGalleryBlock key={block._key} block={block} />
+    case 'quoteBlock':
+      return <QuoteBlock key={block._key} block={block} />
     default:
       return null
   }
@@ -86,10 +92,15 @@ export function BlockRenderer({ blocks }: Props) {
     <>
       {grouped.map((item) => {
         if (item.type === 'half-row') {
+          const isSingle = item.blocks.length === 1
           return (
             <div
               key={item.blocks[0]._key + '-row'}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 section-pad py-8 md:py-12 max-w-[var(--max-w-content)] mx-auto"
+              className={
+                isSingle
+                  ? 'section-pad py-24 md:py-32 max-w-3xl mx-auto'
+                  : 'grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 section-pad py-24 md:py-32 max-w-[var(--max-w-content)] mx-auto'
+              }
             >
               {item.blocks.map((block) => renderBlock(block))}
             </div>

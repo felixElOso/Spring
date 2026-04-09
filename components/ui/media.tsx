@@ -75,7 +75,7 @@ export const MEDIA_RATIO: Record<MediaRatio, string> = {
 
 function defaultSizes(layout: MediaLayout): string {
   switch (layout) {
-    case 'thumbnail': return '(max-width: 640px) 50vw, 25vw'
+    case 'thumbnail': return '(max-width: 768px) 100vw, 50vw'
     case 'contained': return '(max-width: 768px) 100vw, 48rem'
     default:          return '100vw'
   }
@@ -179,6 +179,7 @@ export function Media({
             sizes={sizes ?? defaultSizes(layout)}
             className="w-full h-auto"
             priority={priority}
+            unoptimized
           />
         )}
         {type === 'image' && src && aspectRatio !== 'auto' && (
@@ -189,6 +190,7 @@ export function Media({
             className="object-cover"
             sizes={sizes ?? defaultSizes(layout)}
             priority={priority}
+            unoptimized
           />
         )}
 

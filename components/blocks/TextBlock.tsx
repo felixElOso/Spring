@@ -17,18 +17,22 @@ export function TextBlockRenderer({ block }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={isHalf ? '' : `section-pad py-12 md:py-16 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
+      className={isHalf ? '' : `section-pad py-24 md:py-32 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
-      <div className={isContained ? 'max-w-3xl' : ''}>
+      <div className={isContained ? 'max-w-3xl mx-auto' : ''}>
         {block.title && (
           <h4 className="text-lg md:text-xl font-medium tracking-tight text-foreground">
             {block.title}
           </h4>
         )}
         {block.body && (
-          <p className={`text-base leading-relaxed text-muted-foreground ${block.title ? 'mt-4' : ''}`}>
-            {block.body}
-          </p>
+          <div className={`text-2xl font-medium text-foreground/80 ${block.title ? 'mt-4' : ''}`}>
+            {block.body.split(/\n\n+/).map((paragraph, i) => (
+              <p key={i} className={i > 0 ? 'mt-6' : ''}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
         )}
       </div>
     </motion.div>

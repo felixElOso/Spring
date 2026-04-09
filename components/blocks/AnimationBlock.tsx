@@ -29,7 +29,7 @@ export function AnimationBlock({ block }: Props) {
         <Player autoplay loop src={block.lottieFile.asset.url} style={{ width: '100%' }} />
       ) : block.animationType === 'gif' && block.gifImage ? (
         <Image
-          src={urlFor(block.gifImage).auto('format').url()}
+          src={urlFor(block.gifImage).quality(90).auto('format').fit('max').url()}
           alt=""
           width={1200}
           height={800}

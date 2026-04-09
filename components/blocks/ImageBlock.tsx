@@ -12,7 +12,7 @@ interface Props {
 export function ImageBlock({ block }: Props) {
   if (!block.image) return null
 
-  const src = urlFor(block.image).auto('format').fit('max').url()
+  const src = urlFor(block.image).width(2400).quality(90).auto('format').fit('max').url()
 
   return (
     <Media

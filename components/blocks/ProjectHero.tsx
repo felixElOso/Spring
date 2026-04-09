@@ -39,7 +39,7 @@ export function ProjectHero({
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
-              className="text-2xl font-medium text-muted-foreground leading-relaxed lg:pt-[0.15em]"
+              className="text-2xl font-medium text-muted-foreground lg:pt-[0.15em]"
             >
               {description}
             </motion.p>

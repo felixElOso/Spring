@@ -40,6 +40,7 @@ export const getProjectBySlugQuery = groq`
       _type == "galleryBlock" => { ..., images[] { ..., image { ..., asset-> } } },
       _type == "videoBlock" => { ..., file { asset-> } },
       _type == "animationBlock" => { ..., lottieFile { asset-> }, gifImage { ..., asset-> } },
+      _type == "marqueeGalleryBlock" => { ..., rows[] { ..., images[] { ..., image { ..., asset-> }, companionImage { ..., asset-> } } } },
     },
     seo {
       title,

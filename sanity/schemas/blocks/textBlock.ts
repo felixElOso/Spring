@@ -30,4 +30,17 @@ export const textBlock = defineType({
       initialValue: 'contained',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      body: 'body',
+    },
+    prepare({ title, body }) {
+      const preview = body ? (body.length > 60 ? body.slice(0, 60) + '...' : body) : ''
+      return {
+        title: title || preview || 'Untitled text',
+        subtitle: 'Text',
+      }
+    },
+  },
 })

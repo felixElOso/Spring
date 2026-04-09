@@ -115,10 +115,40 @@ export interface ImageMosaicBlock {
   _type: 'imageMosaicBlock'
   _key: string
   images: ImageMosaicImage[]
+  mosaicStyle?: 'side-by-side' | 'feature'
   layout: BlockLayout
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock
+export interface MarqueeGalleryImage {
+  _key: string
+  image: SanityImage
+  companionImage?: SanityImage
+  altText?: string
+}
+
+export interface MarqueeGalleryRow {
+  _key: string
+  images: MarqueeGalleryImage[]
+}
+
+export interface MarqueeGalleryBlock {
+  _type: 'marqueeGalleryBlock'
+  _key: string
+  rows: MarqueeGalleryRow[]
+  speed: 'slow' | 'medium' | 'fast'
+  pauseOnHover: boolean
+  layout: BlockLayout
+}
+
+export interface QuoteBlock {
+  _type: 'quoteBlock'
+  _key: string
+  quote: string
+  attribution?: string
+  layout: 'contained' | 'full-width'
+}
+
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock
 
 export interface Project {
   _id: string

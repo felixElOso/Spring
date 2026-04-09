@@ -50,4 +50,17 @@ export const richTextBlock = defineType({
       initialValue: 'contained',
     }),
   ],
+  preview: {
+    select: {
+      content: 'content',
+    },
+    prepare({ content }) {
+      const firstBlock = (content || []).find((block: any) => block._type === 'block')
+      const text = firstBlock?.children?.map((child: any) => child.text).join('') || 'Empty rich text'
+      return {
+        title: text.length > 60 ? text.slice(0, 60) + '...' : text,
+        subtitle: 'Rich Text',
+      }
+    },
+  },
 })

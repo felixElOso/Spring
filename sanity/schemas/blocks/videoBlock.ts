@@ -69,4 +69,18 @@ export const videoBlock = defineType({
       initialValue: 'full-width',
     }),
   ],
+  preview: {
+    select: {
+      caption: 'caption',
+      videoType: 'videoType',
+      url: 'url',
+    },
+    prepare({ caption, videoType, url }) {
+      const type = videoType ? videoType.charAt(0).toUpperCase() + videoType.slice(1) : 'Video'
+      return {
+        title: caption || url || 'Untitled video',
+        subtitle: `Video · ${type}`,
+      }
+    },
+  },
 })

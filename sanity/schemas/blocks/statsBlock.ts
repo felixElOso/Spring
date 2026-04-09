@@ -57,4 +57,17 @@ export const statsBlock = defineType({
       initialValue: 'contained',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      items: 'items',
+    },
+    prepare({ title, items }) {
+      const count = items?.length || 0
+      return {
+        title: title || 'Stats',
+        subtitle: `Stats · ${count} item${count !== 1 ? 's' : ''}`,
+      }
+    },
+  },
 })

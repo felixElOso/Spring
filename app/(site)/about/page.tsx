@@ -27,7 +27,7 @@ export default async function AboutPage() {
           About
         </h1>
         <div className="max-w-2xl">
-          <p className="text-xl md:text-2xl text-foreground/80 leading-relaxed">
+          <p className="text-xl md:text-2xl text-foreground/80 leading-7">
             We are a design studio focused on brand identity, digital products, and motion.
             We work with companies that want to make their mark.
           </p>
@@ -41,7 +41,7 @@ export default async function AboutPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
             {team.map((member) => {
               const photoUrl = member.photo
-                ? urlFor(member.photo).width(600).height(600).auto('format').fit('crop').url()
+                ? urlFor(member.photo).width(1200).height(1200).quality(90).auto('format').fit('crop').url()
                 : null
 
               return (
@@ -54,6 +54,7 @@ export default async function AboutPage() {
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 50vw, 25vw"
+                        quality={90}
                       />
                     </div>
                   ) : (

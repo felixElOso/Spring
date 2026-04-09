@@ -45,6 +45,18 @@ export const imageMosaicBlock = defineType({
       validation: (Rule) => Rule.min(2).max(4),
     }),
     defineField({
+      name: 'mosaicStyle',
+      title: 'Mosaic Style',
+      type: 'string',
+      description: 'Controls the arrangement of images.',
+      options: {
+        list: [
+          { title: 'Side by Side', value: 'side-by-side' },
+          { title: 'Feature — Large top, small below', value: 'feature' },
+        ],
+      },
+    }),
+    defineField({
       name: 'layout',
       title: 'Layout',
       type: 'string',
@@ -58,4 +70,21 @@ export const imageMosaicBlock = defineType({
       initialValue: 'full-width',
     }),
   ],
+  initialValue: {
+    mosaicStyle: 'side-by-side',
+    layout: 'full-width',
+  },
+  preview: {
+    select: {
+      images: 'images',
+    },
+    prepare({ images }) {
+      const count = images?.length || 0
+      return {
+        title: `${count} image${count !== 1 ? 's' : ''}`,
+        subtitle: 'Image Mosaic',
+        media: images?.[0]?.image,
+      }
+    },
+  },
 })

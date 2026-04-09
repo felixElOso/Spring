@@ -19,7 +19,7 @@ export function TextBlock({ children, size = "base", className }: TextBlockProps
       className={cn(
         "max-w-3xl text-muted-foreground",
         size === "base" && "text-base md:text-lg leading-relaxed",
-        size === "lg" && "text-lg md:text-xl lg:text-2xl leading-relaxed",
+        size === "lg" && "text-lg md:text-xl lg:text-2xl leading-7",
         className
       )}
     >

@@ -97,6 +97,8 @@ export const project = defineType({
         { type: 'statsBlock' },
         { type: 'headingBlock' },
         { type: 'imageMosaicBlock' },
+        { type: 'marqueeGalleryBlock' },
+        { type: 'quoteBlock' },
       ],
     }),
     defineField({
@@ -110,6 +112,22 @@ export const project = defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      client: 'client',
+      year: 'year',
+      media: 'coverImage',
+    },
+    prepare({ title, client, year, media }) {
+      const parts = [client, year].filter(Boolean)
+      return {
+        title: title || 'Untitled project',
+        subtitle: parts.join(' · '),
+        media,
+      }
+    },
+  },
   orderings: [
     { title: 'Year, New', name: 'yearDesc', by: [{ field: 'year', direction: 'desc' }] },
   ],

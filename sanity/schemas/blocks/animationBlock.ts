@@ -67,4 +67,19 @@ export const animationBlock = defineType({
       initialValue: 'contained',
     }),
   ],
+  preview: {
+    select: {
+      caption: 'caption',
+      animationType: 'animationType',
+      gifImage: 'gifImage',
+    },
+    prepare({ caption, animationType, gifImage }) {
+      const type = animationType === 'lottie' ? 'Lottie' : animationType === 'gif' ? 'GIF' : 'Animation'
+      return {
+        title: caption || 'Untitled animation',
+        subtitle: `Animation · ${type}`,
+        media: gifImage,
+      }
+    },
+  },
 })

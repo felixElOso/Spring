@@ -49,7 +49,7 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const coverUrl = project.coverImage
-    ? urlFor(project.coverImage).width(2400).auto('format').fit('max').url()
+    ? urlFor(project.coverImage).width(2400).quality(90).auto('format').fit('max').url()
     : null
 
   return (
@@ -74,6 +74,7 @@ export default async function ProjectPage({ params }: Props) {
               className="object-cover"
               sizes="100vw"
               priority
+              unoptimized
             />
           </div>
         </div>

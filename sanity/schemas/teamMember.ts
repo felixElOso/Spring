@@ -11,4 +11,11 @@ export const teamMember = defineType({
     defineField({ name: 'photo', title: 'Photo', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'order', title: 'Order', type: 'number', initialValue: 99 }),
   ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'role',
+      media: 'photo',
+    },
+  },
 })

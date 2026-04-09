@@ -10,26 +10,24 @@ interface Props {
   block: ImageMosaicBlockType
 }
 
-function MosaicImage({ item, width }: { item: ImageMosaicImage; width: number }) {
+function MosaicImage({ item, width, rounded, sizes }: { item: ImageMosaicImage; width: number; rounded?: boolean; sizes?: string }) {
   return (
-    <Media
-      type="image"
-      src={urlFor(item.image).width(width).auto('format').url()}
-      alt={item.altText || ''}
-      layout="thumbnail"
-      aspectRatio={item.size === 'large' ? '3/2' : '4/3'}
-      caption={item.caption}
-      animate={false}
-    />
+    <div className={rounded ? 'overflow-hidden rounded-3xl' : ''}>
+      <Media
+        type="image"
+        src={urlFor(item.image).width(width).quality(90).auto('format').fit('max').url()}
+        alt={item.altText || ''}
+        layout="thumbnail"
+        aspectRatio={item.size === 'large' ? '3/2' : '4/3'}
+        caption={item.caption}
+        sizes={sizes ?? '(max-width: 768px) 100vw, 50vw'}
+        animate={false}
+      />
+    </div>
   )
 }
 
-export function ImageMosaicBlock({ block }: Props) {
-  const layout = (block.layout as MediaLayout) ?? 'full-width'
-  const images = block.images ?? []
-
-  if (images.length < 2) return null
-
+function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rounded: boolean }) {
   // Split images into groups: consecutive smalls get stacked together
   const groups: ImageMosaicImage[][] = []
   for (const img of images) {
@@ -41,11 +39,69 @@ export function ImageMosaicBlock({ block }: Props) {
     }
   }
 
-  // Assign grid column spans: large groups get col-span-7, small stacks get col-span-5
-  // If all groups are the same size, split evenly (col-span-6 each)
   const allLarge = groups.every((g) => g[0].size === 'large')
   const allSmall = groups.every((g) => g[0].size === 'small')
   const even = allLarge || allSmall
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+      {groups.map((group, i) => {
+        const isLarge = group[0].size === 'large'
+        const span = even ? 'md:col-span-6' : isLarge ? 'md:col-span-7' : 'md:col-span-5'
+
+        if (group.length === 1) {
+          return (
+            <div key={group[0]._key || i} className={span}>
+              <MosaicImage item={group[0]} width={isLarge ? 2400 : 1600} rounded={rounded} />
+            </div>
+          )
+        }
+
+        return (
+          <div key={group[0]._key || i} className={`${span} flex flex-col gap-4`}>
+            {group.map((item, j) => (
+              <MosaicImage key={item._key || j} item={item} width={1600} rounded={rounded} />
+            ))}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounded: boolean }) {
+  const [feature, ...rest] = images
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Large feature image on top */}
+      <div>
+        <MosaicImage item={feature} width={2400} rounded={rounded} sizes="100vw" />
+      </div>
+
+      {/* Smaller images below in a row */}
+      {rest.length > 0 && (
+        <div className={`grid grid-cols-1 gap-4 ${
+          rest.length === 1 ? 'md:grid-cols-1' :
+          rest.length === 2 ? 'md:grid-cols-2' :
+          'md:grid-cols-3'
+        }`}>
+          {rest.map((item, i) => (
+            <MosaicImage key={item._key || i} item={item} width={1600} rounded={rounded} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function ImageMosaicBlock({ block }: Props) {
+  const layout = (block.layout as MediaLayout) ?? 'full-width'
+  const images = block.images ?? []
+  const mosaicStyle = block.mosaicStyle ?? 'side-by-side'
+  const rounded = layout !== 'full-bleed'
+
+  if (images.length < 2) return null
 
   return (
     <motion.div
@@ -55,29 +111,11 @@ export function ImageMosaicBlock({ block }: Props) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {groups.map((group, i) => {
-          const isLarge = group[0].size === 'large'
-          const span = even ? 'md:col-span-6' : isLarge ? 'md:col-span-7' : 'md:col-span-5'
-
-          if (group.length === 1) {
-            return (
-              <div key={group[0]._key || i} className={span}>
-                <MosaicImage item={group[0]} width={isLarge ? 1200 : 800} />
-              </div>
-            )
-          }
-
-          // Stacked small images
-          return (
-            <div key={group[0]._key || i} className={`${span} flex flex-col gap-4`}>
-              {group.map((item, j) => (
-                <MosaicImage key={item._key || j} item={item} width={800} />
-              ))}
-            </div>
-          )
-        })}
-      </div>
+      {mosaicStyle === 'feature' ? (
+        <FeatureLayout images={images} rounded={rounded} />
+      ) : (
+        <SideBySideLayout images={images} rounded={rounded} />
+      )}
     </motion.div>
   )
 }

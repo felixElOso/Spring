@@ -41,11 +41,12 @@ function Lightbox({
         onClick={(e) => e.stopPropagation()}
       >
         <Image
-          src={urlFor(img.image).width(1600).auto('format').url()}
+          src={urlFor(img.image).width(2400).quality(90).auto('format').fit('max').url()}
           alt={img.altText || ''}
           width={1600}
           height={900}
           className="w-full h-auto"
+          quality={90}
         />
         {img.caption && (
           <p className="mt-3 text-sm text-white/60 text-center">{img.caption}</p>
@@ -94,11 +95,12 @@ export function GalleryBlock({ block }: Props) {
           >
             <Media
               type="image"
-              src={urlFor(item.image).width(800).auto('format').url()}
+              src={urlFor(item.image).width(1600).quality(90).auto('format').fit('max').url()}
               alt={item.altText || ''}
               layout="thumbnail"
               aspectRatio={(block.aspectRatio as MediaRatio) ?? '4/3'}
               caption={item.caption}
+              sizes={`(max-width: 768px) 100vw, ${Math.round(100 / block.columns)}vw`}
               animate={false}
             />
           </div>

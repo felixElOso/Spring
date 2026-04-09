@@ -63,4 +63,18 @@ export const galleryBlock = defineType({
       initialValue: 'full-width',
     }),
   ],
+  preview: {
+    select: {
+      images: 'images',
+      columns: 'columns',
+    },
+    prepare({ images, columns }) {
+      const count = images?.length || 0
+      return {
+        title: `${count} image${count !== 1 ? 's' : ''}`,
+        subtitle: `Gallery · ${columns || 2} columns`,
+        media: images?.[0]?.image,
+      }
+    },
+  },
 })
