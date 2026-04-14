@@ -64,7 +64,20 @@ export default async function ProjectPage({ params }: Props) {
       />
 
       {/* 2. Full-bleed cover media */}
-      {coverUrl && (
+      {(project.coverVideoFile?.asset?.url || project.coverVideo) ? (
+        <div className="w-full">
+          <div className="relative aspect-[16/9] w-full overflow-hidden bg-ink">
+            <video
+              src={project.coverVideoFile?.asset?.url || project.coverVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+        </div>
+      ) : coverUrl ? (
         <div className="w-full">
           <div className="relative aspect-[16/9] w-full overflow-hidden">
             <Image
@@ -78,7 +91,7 @@ export default async function ProjectPage({ params }: Props) {
             />
           </div>
         </div>
-      )}
+      ) : null}
 
       {/* 3. Content blocks */}
       {project.contentBlocks && project.contentBlocks.length > 0 && (

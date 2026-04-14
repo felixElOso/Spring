@@ -34,6 +34,7 @@ export const getProjectBySlugQuery = groq`
     featured,
     coverImage,
     coverVideo,
+    coverVideoFile { asset-> { url } },
     contentBlocks[] {
       ...,
       _type == "imageBlock" => { ..., image { ..., asset-> } },
