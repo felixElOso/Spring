@@ -514,7 +514,7 @@ function ButtonSection() {
 
 const MEDIA_TYPES:   MediaType[]   = ['image', 'video', 'animation']
 const MEDIA_RATIOS:  MediaRatio[]  = ['16/9', '4/3', '1/1', '3/2', '21/9', '9/16']
-const MEDIA_LAYOUTS: MediaLayout[] = ['full-bleed', 'full-width', 'contained', 'thumbnail']
+const MEDIA_LAYOUTS: MediaLayout[] = ['full-bleed', 'full-width', 'wide', 'medium', 'contained', 'narrow', 'thumbnail']
 
 const LAYOUT_META: Record<MediaLayout, { widthPercent: number; desc: string; token: string; spacing: string }> = {
   'full-bleed': {
@@ -525,15 +525,33 @@ const LAYOUT_META: Record<MediaLayout, { widthPercent: number; desc: string; tok
   },
   'full-width': {
     widthPercent: 88,
-    desc:    'Max-width 1400px with standard page padding.',
-    token:   'max-w-content section-pad',
+    desc:    'Full width with standard page padding.',
+    token:   'w-full section-pad',
     spacing: 'py-8 md:py-16',
   },
-  'contained': {
+  'wide': {
+    widthPercent: 75,
+    desc:    'Max-width 1600px, centered with page padding.',
+    token:   'max-w-[1600px] mx-auto section-pad',
+    spacing: 'py-8 md:py-16',
+  },
+  'medium': {
     widthPercent: 55,
-    desc:    'Text column width (max-w-3xl) with page padding.',
-    token:   'max-w-3xl px-6 md:px-24',
+    desc:    'Max-width 960px, centered with page padding.',
+    token:   'max-w-[960px] mx-auto section-pad',
     spacing: 'py-8 md:py-12',
+  },
+  'contained': {
+    widthPercent: 40,
+    desc:    'Max-width 768px, centered with page padding.',
+    token:   'max-w-[768px] mx-auto section-pad',
+    spacing: 'py-8 md:py-12',
+  },
+  'narrow': {
+    widthPercent: 28,
+    desc:    'Max-width 560px, centered with page padding.',
+    token:   'max-w-[560px] mx-auto section-pad',
+    spacing: 'py-6 md:py-10',
   },
   'thumbnail': {
     widthPercent: 22,
