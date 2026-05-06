@@ -22,9 +22,12 @@ export const textBlock = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Contained', value: 'contained' },
-          { title: 'Full Width', value: 'full-width' },
-          { title: 'Half Width', value: 'half' },
+          { title: 'Full Width  · Max canvas',  value: 'full-width' },
+          { title: 'Wide        · 1600px',      value: 'wide'       },
+          { title: 'Medium      · 960px',       value: 'medium'     },
+          { title: 'Contained   · 768px',       value: 'contained'  },
+          { title: 'Narrow      · 560px',       value: 'narrow'     },
+          { title: 'Half Width  · Side by side', value: 'half'      },
         ],
       },
       initialValue: 'contained',

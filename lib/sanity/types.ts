@@ -13,7 +13,7 @@ export interface SanityImage {
   crop?: { top: number; bottom: number; left: number; right: number }
 }
 
-export type BlockLayout = 'full-bleed' | 'full-width' | 'contained'
+export type BlockLayout = 'full-bleed' | 'full-width' | 'wide' | 'medium' | 'contained' | 'narrow'
 
 export interface RichTextBlock {
   _type: 'richTextBlock'
@@ -88,12 +88,19 @@ export interface StatsBlockItem {
   description?: string
 }
 
+export interface StatsCreditsColumn {
+  _key: string
+  label: string
+  items: string[]
+}
+
 export interface StatsBlock {
   _type: 'statsBlock'
   _key: string
   title?: string
   items: StatsBlockItem[]
-  layout: 'contained' | 'full-width'
+  credits?: StatsCreditsColumn[]
+  layout: BlockLayout
 }
 
 export interface HeadingBlock {
@@ -105,7 +112,12 @@ export interface HeadingBlock {
 
 export interface ImageMosaicImage {
   _key: string
+  mediaType?: 'image' | 'beforeAfter'
   image: SanityImage
+  beforeImage?: SanityImage
+  afterImage?: SanityImage
+  beforeLabel?: string
+  afterLabel?: string
   caption?: string
   altText?: string
   size: 'large' | 'small'
@@ -148,7 +160,19 @@ export interface QuoteBlock {
   layout: 'contained' | 'full-width'
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock
+export interface BeforeAfterBlock {
+  _type: 'beforeAfterBlock'
+  _key: string
+  beforeImage: SanityImage
+  afterImage: SanityImage
+  beforeLabel?: string
+  afterLabel?: string
+  initialPosition?: number
+  aspectRatio?: string
+  layout: BlockLayout
+}
+
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock | BeforeAfterBlock
 
 export interface Project {
   _id: string
@@ -167,6 +191,7 @@ export interface Project {
     lottieFile?: { asset: { url: string } }
     gifImage?: SanityImage
   }
+  thumbnailMedia?: 'image' | 'video'
   thumbnailSize?: 'regular' | 'large'
   contentBlocks?: ContentBlock[]
   seo?: {

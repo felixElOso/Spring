@@ -43,6 +43,20 @@ export const project = defineType({
       },
       initialValue: 'regular',
     }),
+    defineField({
+      name: 'thumbnailMedia',
+      title: 'Thumbnail Media',
+      type: 'string',
+      description: 'Choose whether the homepage thumbnail shows the cover image or cover video.',
+      options: {
+        list: [
+          { title: 'Image', value: 'image' },
+          { title: 'Video', value: 'video' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'image',
+    }),
     defineField({ name: 'coverVideo', title: 'Cover Video URL (hover)', type: 'url' }),
     defineField({
       name: 'coverVideoFile',
@@ -99,6 +113,7 @@ export const project = defineType({
         { type: 'imageMosaicBlock' },
         { type: 'marqueeGalleryBlock' },
         { type: 'quoteBlock' },
+        { type: 'beforeAfterBlock' },
       ],
     }),
     defineField({

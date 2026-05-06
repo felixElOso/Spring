@@ -1,0 +1,16 @@
+PRINT VENDOR GRADE CHART,,,,,,
+Scores: 1–10 per criterion | Grade auto-calculates from average,,,,,,
+,,,,,,
+Vendor,Print Quality (1–10),Pricing (1–10),Turnaround Time (1–10),"Client Portal, Inventory & National Footprint (1–10)",Overall Score,Grade
+Vendor A,,,,,=AVERAGE(B5:E5),"=IF(F5>=9,""A+"",IF(F5>=8,""A"",IF(F5>=7,""B"",IF(F5>=6,""C"",IF(F5>=5,""D"",""F"")))))"
+Vendor B,,,,,=AVERAGE(B6:E6),"=IF(F6>=9,""A+"",IF(F6>=8,""A"",IF(F6>=7,""B"",IF(F6>=6,""C"",IF(F6>=5,""D"",""F"")))))"
+Vendor C,,,,,=AVERAGE(B7:E7),"=IF(F7>=9,""A+"",IF(F7>=8,""A"",IF(F7>=7,""B"",IF(F7>=6,""C"",IF(F7>=5,""D"",""F"")))))"
+Vendor D,,,,,=AVERAGE(B8:E8),"=IF(F8>=9,""A+"",IF(F8>=8,""A"",IF(F8>=7,""B"",IF(F8>=6,""C"",IF(F8>=5,""D"",""F"")))))"
+,,,,,,
+SCORING KEY,,,,,,
+9–10,A+,,,,,
+8–8.9,A,,,,,
+7–7.9,B,,,,,
+6–6.9,C,,,,,
+5–5.9,D,,,,,
+Below 5,F,,,,,

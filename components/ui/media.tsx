@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 // ─── Public types ─────────────────────────────────────────────────────────────
 
 export type MediaType   = 'image' | 'video' | 'animation'
-export type MediaLayout = 'full-bleed' | 'full-width' | 'contained' | 'thumbnail'
+export type MediaLayout = 'full-bleed' | 'full-width' | 'wide' | 'medium' | 'contained' | 'narrow' | 'thumbnail'
 export type MediaRatio  = '16/9' | '4/3' | '1/1' | '3/2' | '21/9' | '9/16' | 'auto'
 
 export interface MediaProps {
@@ -36,6 +36,7 @@ export interface MediaProps {
 
   // ── Misc ───────────────────────────────────────────────
   animate?:      boolean
+  rounded?:      boolean
   className?:    string
   style?:        React.CSSProperties
   onMouseEnter?: React.MouseEventHandler<HTMLElement>
@@ -49,15 +50,21 @@ export interface MediaProps {
 
 export const MEDIA_OUTER: Record<MediaLayout, string> = {
   'full-bleed': 'w-full',
-  'full-width': 'max-w-content mx-auto section-pad',
-  'contained':  'max-w-3xl mx-auto px-6 md:px-12 lg:px-24',
+  'full-width': 'w-full section-pad',
+  'wide':       'max-w-[1600px] mx-auto section-pad',
+  'medium':     'max-w-[960px] mx-auto section-pad',
+  'contained':  'max-w-[768px] mx-auto section-pad',
+  'narrow':     'max-w-[560px] mx-auto section-pad',
   'thumbnail':  '',
 }
 
 export const MEDIA_SPACING: Record<MediaLayout, string> = {
   'full-bleed': '',
   'full-width': 'py-8 md:py-16',
+  'wide':       'py-8 md:py-16',
+  'medium':     'py-8 md:py-12',
   'contained':  'py-8 md:py-12',
+  'narrow':     'py-6 md:py-10',
   'thumbnail':  '',
 }
 
@@ -75,9 +82,12 @@ export const MEDIA_RATIO: Record<MediaRatio, string> = {
 
 function defaultSizes(layout: MediaLayout): string {
   switch (layout) {
-    case 'thumbnail': return '(max-width: 768px) 100vw, 50vw'
-    case 'contained': return '(max-width: 768px) 100vw, 48rem'
-    default:          return '100vw'
+    case 'thumbnail':  return '(max-width: 768px) 100vw, 50vw'
+    case 'narrow':     return '(max-width: 768px) 100vw, 560px'
+    case 'contained':  return '(max-width: 768px) 100vw, 672px'
+    case 'medium':     return '(max-width: 768px) 100vw, 768px'
+    case 'wide':       return '(max-width: 768px) 100vw, 1280px'
+    default:           return '100vw'
   }
 }
 
@@ -137,6 +147,7 @@ export function Media({
   muted       = true,
   controls    = true,
   animate     = true,
+  rounded     = false,
   className,
   style,
   onMouseEnter,
@@ -167,7 +178,7 @@ export function Media({
   const content = (
     <>
       {/* ── Media surface ─────────────────────────────────── */}
-      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio])}>
+      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl')}>
 
         {/* Image */}
         {type === 'image' && src && aspectRatio === 'auto' && (

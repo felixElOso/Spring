@@ -74,9 +74,12 @@ export const marqueeGalleryBlock = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Full Bleed', value: 'full-bleed' },
-          { title: 'Full Width', value: 'full-width' },
-          { title: 'Contained', value: 'contained' },
+          { title: 'Full Bleed  · Edge to edge',   value: 'full-bleed' },
+          { title: 'Full Width  · Max canvas',      value: 'full-width' },
+          { title: 'Wide        · 1600px',          value: 'wide'       },
+          { title: 'Medium      · 960px',           value: 'medium'     },
+          { title: 'Contained   · 768px',           value: 'contained'  },
+          { title: 'Narrow      · 560px',           value: 'narrow'     },
         ],
       },
     }),

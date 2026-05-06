@@ -9,6 +9,7 @@ import { HeadingBlock } from './HeadingBlock'
 import { ImageMosaicBlock } from './ImageMosaicBlock'
 import { MarqueeGalleryBlock } from './MarqueeGalleryBlock'
 import { QuoteBlock } from './QuoteBlock'
+import { BeforeAfterBlock } from './BeforeAfterBlock'
 import type { ContentBlock } from '@/lib/sanity/types'
 
 interface Props {
@@ -78,6 +79,8 @@ function renderBlock(block: ContentBlock) {
       return <MarqueeGalleryBlock key={block._key} block={block} />
     case 'quoteBlock':
       return <QuoteBlock key={block._key} block={block} />
+    case 'beforeAfterBlock':
+      return <BeforeAfterBlock key={block._key} block={block} />
     default:
       return null
   }

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { urlFor } from '@/lib/sanity/client'
 import { Media, MEDIA_OUTER, MEDIA_SPACING } from '@/components/ui/media'
+import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider'
 import type { MediaLayout } from '@/components/ui/media'
 import type { ImageMosaicBlock as ImageMosaicBlockType, ImageMosaicImage } from '@/lib/sanity/types'
 
@@ -10,7 +11,29 @@ interface Props {
   block: ImageMosaicBlockType
 }
 
-function MosaicImage({ item, width, rounded, sizes }: { item: ImageMosaicImage; width: number; rounded?: boolean; sizes?: string }) {
+function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMosaicImage; width: number; rounded?: boolean; sizes?: string; fillHeight?: boolean }) {
+  const isBeforeAfter = item.mediaType === 'beforeAfter' && item.beforeImage && item.afterImage
+
+  if (isBeforeAfter) {
+    const beforeUrl = urlFor(item.beforeImage!).width(width).quality(90).auto('format').fit('max').url()
+    const afterUrl = urlFor(item.afterImage!).width(width).quality(90).auto('format').fit('max').url()
+
+    return (
+      <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${fillHeight ? 'h-full' : ''}`}>
+        <BeforeAfterSlider
+          beforeUrl={beforeUrl}
+          afterUrl={afterUrl}
+          beforeLabel={item.beforeLabel || 'Before'}
+          afterLabel={item.afterLabel || 'After'}
+          fillHeight={fillHeight}
+        />
+        {item.caption && (
+          <p className="mt-3 text-sm text-foreground/50">{item.caption}</p>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={rounded ? 'overflow-hidden rounded-3xl' : ''}>
       <Media
@@ -43,6 +66,9 @@ function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rou
   const allSmall = groups.every((g) => g[0].size === 'small')
   const even = allLarge || allSmall
 
+  // Check if any group has stacked items (meaning a large item should stretch to match)
+  const hasStackedGroup = groups.some((g) => g.length > 1)
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
       {groups.map((group, i) => {
@@ -50,9 +76,11 @@ function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rou
         const span = even ? 'md:col-span-6' : isLarge ? 'md:col-span-7' : 'md:col-span-5'
 
         if (group.length === 1) {
+          // Large single items stretch to match stacked small items beside them
+          const shouldFillHeight = isLarge && hasStackedGroup
           return (
             <div key={group[0]._key || i} className={span}>
-              <MosaicImage item={group[0]} width={isLarge ? 2400 : 1600} rounded={rounded} />
+              <MosaicItem item={group[0]} width={isLarge ? 2400 : 1600} rounded={rounded} fillHeight={shouldFillHeight} />
             </div>
           )
         }
@@ -60,7 +88,7 @@ function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rou
         return (
           <div key={group[0]._key || i} className={`${span} flex flex-col gap-4`}>
             {group.map((item, j) => (
-              <MosaicImage key={item._key || j} item={item} width={1600} rounded={rounded} />
+              <MosaicItem key={item._key || j} item={item} width={1600} rounded={rounded} />
             ))}
           </div>
         )
@@ -76,7 +104,7 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
     <div className="flex flex-col gap-4">
       {/* Large feature image on top */}
       <div>
-        <MosaicImage item={feature} width={2400} rounded={rounded} sizes="100vw" />
+        <MosaicItem item={feature} width={2400} rounded={rounded} sizes="100vw" />
       </div>
 
       {/* Smaller images below in a row */}
@@ -87,7 +115,7 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
           'md:grid-cols-3'
         }`}>
           {rest.map((item, i) => (
-            <MosaicImage key={item._key || i} item={item} width={1600} rounded={rounded} />
+            <MosaicItem key={item._key || i} item={item} width={1600} rounded={rounded} />
           ))}
         </div>
       )}

@@ -11,6 +11,7 @@ import { headingBlock } from './blocks/headingBlock'
 import { imageMosaicBlock } from './blocks/imageMosaicBlock'
 import { marqueeGalleryBlock } from './blocks/marqueeGalleryBlock'
 import { quoteBlock } from './blocks/quoteBlock'
+import { beforeAfterBlock } from './blocks/beforeAfterBlock'
 
 export const schemaTypes = [
   project,
@@ -26,4 +27,5 @@ export const schemaTypes = [
   imageMosaicBlock,
   marqueeGalleryBlock,
   quoteBlock,
+  beforeAfterBlock,
 ]

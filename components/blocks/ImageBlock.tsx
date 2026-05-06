@@ -13,15 +13,18 @@ export function ImageBlock({ block }: Props) {
   if (!block.image) return null
 
   const src = urlFor(block.image).width(2400).quality(90).auto('format').fit('max').url()
+  const layout = (block.layout as MediaLayout) ?? 'contained'
+  const rounded = layout !== 'full-bleed'
 
   return (
     <Media
       type="image"
       src={src}
       alt={block.altText || ''}
-      layout={(block.layout as MediaLayout) ?? 'contained'}
+      layout={layout}
       aspectRatio={(block.aspectRatio as MediaRatio) ?? '16/9'}
       caption={block.caption}
+      rounded={rounded}
     />
   )
 }

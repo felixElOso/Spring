@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { urlFor } from '@/lib/sanity/client'
 import { Media } from '@/components/ui/media'
@@ -14,26 +12,11 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [videoVisible, setVideoVisible] = useState(false)
+  // Resolve the video source: uploaded file takes priority over URL
+  const videoSrc = project.coverVideoFile?.asset?.url ?? project.coverVideo
 
-  // Resolve the hover video source: uploaded file takes priority over URL
-  const hoverVideoSrc = project.coverVideoFile?.asset?.url ?? project.coverVideo
-
-  const handleMouseEnter = () => {
-    if (hoverVideoSrc || project.coverAnimation) {
-      setVideoVisible(true)
-      videoRef.current?.play()
-    }
-  }
-
-  const handleMouseLeave = () => {
-    if (hoverVideoSrc || project.coverAnimation) {
-      setVideoVisible(false)
-      videoRef.current?.pause()
-      if (videoRef.current) videoRef.current.currentTime = 0
-    }
-  }
+  // Use video thumbnail only when explicitly chosen in Sanity
+  const useVideo = project.thumbnailMedia === 'video' && !!videoSrc
 
   // Determine if this card should span 2 columns
   const isLarge = project.thumbnailSize === 'large' || featured
@@ -48,13 +31,7 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
         .url()
     : null
 
-  // Resolve animation cover
-  const gifUrl = project.coverAnimation?.animationType === 'gif' && project.coverAnimation.gifImage
-    ? urlFor(project.coverAnimation.gifImage).quality(90).auto('format').fit('max').url()
-    : null
-  const lottieUrl = project.coverAnimation?.animationType === 'lottie'
-    ? project.coverAnimation.lottieFile?.asset?.url
-    : null
+  const mediaSizes = isLarge ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'
 
   return (
     <motion.div
@@ -65,46 +42,34 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
       className={isLarge ? 'md:col-span-2' : ''}
     >
       <Link href={`/projects/${project.slug.current}`} className="group block">
-        {/* Cover media */}
-        <Media
-          type="image"
-          src={coverImageUrl ?? undefined}
-          alt={project.title}
-          layout="thumbnail"
-          aspectRatio="4/3"
-          priority={isLarge}
-          sizes={isLarge ? '(max-width: 768px) 100vw, 66vw' : '(max-width: 768px) 100vw, 33vw'}
-          animate={false}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Hover video (URL or uploaded file) */}
-          {hoverVideoSrc && (
-            <video
-              ref={videoRef}
-              src={hoverVideoSrc}
-              muted
-              loop
-              playsInline
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                videoVisible ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          )}
-
-          {/* Hover GIF animation */}
-          {!hoverVideoSrc && gifUrl && (
-            <Image
-              src={gifUrl}
-              alt={project.title}
-              fill
-              unoptimized
-              className={`absolute inset-0 object-cover transition-opacity duration-500 ${
-                videoVisible ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          )}
-        </Media>
+        {/* Cover media — either a video or an image, controlled by thumbnailMedia field */}
+        {useVideo ? (
+          <Media
+            type="video"
+            src={videoSrc}
+            alt={project.title}
+            layout="thumbnail"
+            aspectRatio="4/3"
+            autoplay
+            muted
+            loop
+            controls={false}
+            priority={isLarge}
+            sizes={mediaSizes}
+            animate={false}
+          />
+        ) : (
+          <Media
+            type="image"
+            src={coverImageUrl ?? undefined}
+            alt={project.title}
+            layout="thumbnail"
+            aspectRatio="4/3"
+            priority={isLarge}
+            sizes={mediaSizes}
+            animate={false}
+          />
+        )}
 
         {/* Info */}
         <div className="mt-4">

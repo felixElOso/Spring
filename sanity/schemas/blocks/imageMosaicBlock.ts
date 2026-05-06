@@ -14,7 +14,24 @@ export const imageMosaicBlock = defineType({
         {
           type: 'object',
           fields: [
-            { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+            {
+              name: 'mediaType',
+              type: 'string',
+              title: 'Media Type',
+              options: {
+                list: [
+                  { title: 'Image', value: 'image' },
+                  { title: 'Before / After', value: 'beforeAfter' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'image',
+            },
+            { name: 'image', type: 'image', title: 'Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType === 'beforeAfter' },
+            { name: 'beforeImage', type: 'image', title: 'Before Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
+            { name: 'afterImage', type: 'image', title: 'After Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
+            { name: 'beforeLabel', type: 'string', title: 'Before Label', initialValue: 'Before', hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
+            { name: 'afterLabel', type: 'string', title: 'After Label', initialValue: 'After', hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
             { name: 'caption', type: 'string', title: 'Caption' },
             { name: 'altText', type: 'string', title: 'Alt Text' },
             {
@@ -31,12 +48,13 @@ export const imageMosaicBlock = defineType({
             },
           ],
           preview: {
-            select: { title: 'altText', media: 'image', size: 'size' },
-            prepare({ title, media, size }) {
+            select: { title: 'altText', media: 'image', beforeImage: 'beforeImage', size: 'size', mediaType: 'mediaType' },
+            prepare({ title, media, beforeImage, size, mediaType }) {
+              const isBA = mediaType === 'beforeAfter'
               return {
-                title: title || 'Image',
-                subtitle: size === 'large' ? 'Large' : 'Small',
-                media,
+                title: title || (isBA ? 'Before / After' : 'Image'),
+                subtitle: `${isBA ? 'Before/After' : 'Image'} · ${size === 'large' ? 'Large' : 'Small'}`,
+                media: isBA ? beforeImage : media,
               }
             },
           },
@@ -62,9 +80,12 @@ export const imageMosaicBlock = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Full Bleed', value: 'full-bleed' },
-          { title: 'Full Width', value: 'full-width' },
-          { title: 'Contained', value: 'contained' },
+          { title: 'Full Bleed  · Edge to edge',   value: 'full-bleed' },
+          { title: 'Full Width  · Max canvas',      value: 'full-width' },
+          { title: 'Wide        · 1600px',          value: 'wide'       },
+          { title: 'Medium      · 960px',           value: 'medium'     },
+          { title: 'Contained   · 768px',           value: 'contained'  },
+          { title: 'Narrow      · 560px',           value: 'narrow'     },
         ],
       },
       initialValue: 'full-width',

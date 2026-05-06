@@ -43,6 +43,35 @@ export function StatsBlock({ block }: Props) {
           </motion.div>
         ))}
       </div>
+
+      {block.credits && block.credits.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.2 }}
+          className="section-pad mt-12 md:mt-16"
+        >
+          <div className="border-t border-border pt-8 md:pt-10">
+            <div className="flex flex-wrap gap-x-24 gap-y-8">
+              {block.credits.map((col) => (
+                <div key={col._key}>
+                  <p className="text-xs font-medium uppercase tracking-wider text-foreground/40 mb-3">
+                    {col.label}
+                  </p>
+                  <ul className="space-y-1">
+                    {col.items.map((item, i) => (
+                      <li key={i} className="text-sm text-foreground/70">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   )
 }

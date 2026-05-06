@@ -4,12 +4,9 @@
     {
       "name": "dev",
       "runtimeExecutable": "/Applications/Cursor.app/Contents/Resources/app/resources/helpers/node",
-      "runtimeArgs": ["node_modules/.bin/next", "dev"],
+      "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack"],
       "port": 3000,
-      "autoPort": true,
-      "env": {
-        "PATH": "/Applications/Cursor.app/Contents/Resources/app/resources/helpers:/usr/local/bin:/usr/bin:/bin"
-      }
+      "autoPort": true
     }
   ]
 }
