@@ -5,7 +5,15 @@ export const project = defineType({
   title: 'Project',
   type: 'document',
   fields: [
-    defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'text',
+      rows: 2,
+      description:
+        'Press Enter to control where the title wraps in the project hero (e.g. "Expert" / "Headshots" on two lines). Line breaks only affect the hero — nav, cards, and SEO collapse them to a single space.',
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: 'slug',
       title: 'Slug',

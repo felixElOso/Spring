@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { flattenTitle } from "@/lib/utils"
 
 interface ProjectHeroProps {
   title: string
@@ -47,7 +48,7 @@ export function ProjectHero({
             ) : coverUrl ? (
               <Image
                 src={coverUrl}
-                alt={title}
+                alt={flattenTitle(title)}
                 fill
                 sizes="(min-width: 1400px) 1320px, 100vw"
                 className="object-cover"
@@ -63,7 +64,7 @@ export function ProjectHero({
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-          className="text-[clamp(3.25rem,10vw,9.375rem)] font-medium leading-none tracking-[-0.03em] text-foreground"
+          className="whitespace-pre-line text-[clamp(3.25rem,10vw,9.375rem)] font-medium leading-none tracking-[-0.03em] text-foreground"
         >
           {title}
         </motion.h1>

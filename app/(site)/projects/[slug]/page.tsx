@@ -5,6 +5,7 @@ import { getProjectBySlugQuery, getAllProjectsQuery } from '@/lib/sanity/queries
 import { BlockRenderer } from '@/components/blocks/BlockRenderer'
 import { ProjectHero } from '@/components/blocks/ProjectHero'
 import { NextProjectTeaser } from '@/components/blocks/NextProjectTeaser'
+import { flattenTitle } from '@/lib/utils'
 import type { Project } from '@/lib/sanity/types'
 
 export const revalidate = 60
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : undefined
 
   return {
-    title: project.seo?.title || project.title,
+    title: project.seo?.title || flattenTitle(project.title),
     description: project.seo?.description || project.description,
     openGraph: ogImageUrl ? { images: [{ url: ogImageUrl }] } : undefined,
   }

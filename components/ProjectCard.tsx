@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { urlFor } from '@/lib/sanity/client'
 import { Media } from '@/components/ui/media'
+import { flattenTitle } from '@/lib/utils'
 import type { Project } from '@/lib/sanity/types'
 
 interface ProjectCardProps {
@@ -47,7 +48,7 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
           <Media
             type="video"
             src={videoSrc}
-            alt={project.title}
+            alt={flattenTitle(project.title)}
             layout="thumbnail"
             aspectRatio="4/3"
             autoplay
@@ -62,7 +63,7 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
           <Media
             type="image"
             src={coverImageUrl ?? undefined}
-            alt={project.title}
+            alt={flattenTitle(project.title)}
             layout="thumbnail"
             aspectRatio="4/3"
             priority={isLarge}
@@ -75,7 +76,7 @@ export function ProjectCard({ project, featured }: ProjectCardProps) {
         <div className="mt-4">
           <div className="flex items-start justify-between gap-4">
             <h3 className="text-base font-medium text-foreground group-hover:text-coral transition-colors duration-200">
-              {project.title}
+              {flattenTitle(project.title)}
             </h3>
             {project.year && (
               <span className="text-sm text-foreground/40 shrink-0">{project.year}</span>

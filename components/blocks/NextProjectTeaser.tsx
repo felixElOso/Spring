@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { urlFor } from "@/lib/sanity/client"
+import { flattenTitle } from "@/lib/utils"
 import type { SanityImage, SanitySlug } from "@/lib/sanity/types"
 
 interface NextProjectTeaserProps {
@@ -25,7 +26,7 @@ export function NextProjectTeaser({ project }: NextProjectTeaserProps) {
       {coverUrl && (
         <Image
           src={coverUrl}
-          alt={project.title}
+          alt={flattenTitle(project.title)}
           fill
           className="object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500"
           sizes="100vw"
@@ -38,7 +39,7 @@ export function NextProjectTeaser({ project }: NextProjectTeaserProps) {
             Next Project
           </p>
           <p className="text-[clamp(2rem,5vw,5rem)] font-medium leading-none text-foreground">
-            {project.title}
+            {flattenTitle(project.title)}
           </p>
         </div>
         <div className="flex-shrink-0">
