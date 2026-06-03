@@ -22,7 +22,7 @@ export function Nav() {
           scrolled ? 'bg-background/90 backdrop-blur-md border-b border-border' : ''
         }`}
       >
-        <div className="max-w-content mx-auto section-pad flex items-center justify-between h-16">
+        <div className="max-w-content mx-auto section-pad flex items-center justify-between h-20 lg:h-[103px]">
           <Link href="/" className="font-medium text-sm tracking-widest uppercase transition-colors duration-300 text-foreground">
             Spring
           </Link>
