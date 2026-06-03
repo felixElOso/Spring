@@ -23,7 +23,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
 
   return (
     <div
-      className="flex-shrink-0 h-48 md:h-64 lg:h-72 rounded-sm"
+      className="flex-shrink-0 h-[600px] md:h-[820px] xl:h-[1040px] rounded-sm"
       style={{ perspective: '1000px' }}
     >
       <div
@@ -36,10 +36,10 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
-            src={urlFor(img.image).height(576).quality(90).auto('format').fit('max').url()}
+            src={urlFor(img.image).height(1040).quality(90).auto('format').fit('max').url()}
             alt={img.altText || ''}
-            width={800}
-            height={576}
+            width={1445}
+            height={1040}
             className="h-full w-auto object-cover"
             loading="lazy"
             quality={90}
@@ -56,10 +56,10 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
             }}
           >
             <Image
-              src={urlFor(img.companionImage!).height(576).quality(90).auto('format').fit('max').url()}
+              src={urlFor(img.companionImage!).height(1040).quality(90).auto('format').fit('max').url()}
               alt={img.altText ? `${img.altText} (companion)` : ''}
-              width={800}
-              height={576}
+              width={1445}
+              height={1040}
               className="h-full w-auto object-cover"
               loading="lazy"
               quality={90}

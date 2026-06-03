@@ -21,12 +21,12 @@ export function TextBlockRenderer({ block }: Props) {
     >
       <div className={isContained ? 'max-w-3xl mx-auto' : ''}>
         {block.title && (
-          <h4 className="text-lg md:text-xl font-medium tracking-tight text-foreground">
+          <h4 className="text-2xl font-medium tracking-tight text-muted-foreground">
             {block.title}
           </h4>
         )}
         {block.body && (
-          <div className={`text-2xl font-medium text-foreground/80 ${block.title ? 'mt-4' : ''}`}>
+          <div className={`text-xl font-normal text-muted-foreground ${block.title ? 'mt-4' : ''}`}>
             {block.body.split(/\n\n+/).map((paragraph, i) => (
               <p key={i} className={i > 0 ? 'mt-6' : ''}>
                 {paragraph}
