@@ -32,6 +32,8 @@ export const getProjectBySlugQuery = groq`
     year,
     tags,
     description,
+    challenge,
+    solution,
     featured,
     coverImage,
     coverVideo,

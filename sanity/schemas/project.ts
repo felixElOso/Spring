@@ -17,6 +17,20 @@ export const project = defineType({
     defineField({ name: 'year', title: 'Year', type: 'number' }),
     defineField({ name: 'description', title: 'Description', type: 'text', rows: 3 }),
     defineField({
+      name: 'challenge',
+      title: 'Challenge',
+      type: 'text',
+      rows: 5,
+      description: 'Shown in the project hero, left column.',
+    }),
+    defineField({
+      name: 'solution',
+      title: 'Solution',
+      type: 'text',
+      rows: 5,
+      description: 'Shown in the project hero, right column.',
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',

@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { client, urlFor } from '@/lib/sanity/client'
@@ -54,53 +53,23 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article>
-      {/* 1. Type-led hero — title, description, metadata */}
+      {/* 1. Hero — cover media, oversized title, Challenge / Solution */}
       <ProjectHero
         title={project.title}
-        description={project.description}
-        client={project.client}
-        year={project.year}
-        tags={project.tags}
+        coverUrl={coverUrl}
+        coverVideoUrl={project.coverVideoFile?.asset?.url || project.coverVideo}
+        challenge={project.challenge}
+        solution={project.solution}
       />
 
-      {/* 2. Full-bleed cover media */}
-      {(project.coverVideoFile?.asset?.url || project.coverVideo) ? (
-        <div className="w-full">
-          <div className="relative aspect-[16/9] w-full overflow-hidden bg-ink">
-            <video
-              src={project.coverVideoFile?.asset?.url || project.coverVideo}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
-        </div>
-      ) : coverUrl ? (
-        <div className="w-full">
-          <div className="relative aspect-[16/9] w-full overflow-hidden">
-            <Image
-              src={coverUrl}
-              alt={project.title}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-              unoptimized
-            />
-          </div>
-        </div>
-      ) : null}
-
-      {/* 3. Content blocks */}
+      {/* 2. Content blocks */}
       {project.contentBlocks && project.contentBlocks.length > 0 && (
         <div className="pb-8">
           <BlockRenderer blocks={project.contentBlocks} />
         </div>
       )}
 
-      {/* 4. Next project teaser */}
+      {/* 3. Next project teaser */}
       {project.nextProject && (
         <NextProjectTeaser project={project.nextProject} />
       )}

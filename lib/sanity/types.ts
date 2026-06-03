@@ -181,6 +181,8 @@ export interface Project {
   client?: string
   year?: number
   description?: string
+  challenge?: string
+  solution?: string
   tags?: string[]
   featured: boolean
   coverImage?: SanityImage
