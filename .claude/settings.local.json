@@ -15,7 +15,9 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(mkdir -p \"app/\\(site\\)\")",
       "Bash(mv app/about app/design-system app/projects app/page.tsx app/loading.tsx app/robots.ts app/sitemap.ts \"app/\\(site\\)/\")",
-      "Bash(kill 29062)"
+      "Bash(kill 29062)",
+      "Read(//private/tmp/claude-503/**)",
+      "Bash(git -C \"/Users/fstekolshch/Desktop/Claude Playground/Spring\" ls-remote origin main)"
     ]
   }
 }
