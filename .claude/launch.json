@@ -7,6 +7,14 @@
       "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack"],
       "port": 3000,
       "autoPort": true
+    },
+    {
+      "name": "spring",
+      "cwd": "../../..",
+      "runtimeExecutable": "/Applications/Cursor.app/Contents/Resources/app/resources/helpers/node",
+      "runtimeArgs": ["node_modules/.bin/next", "dev", "--webpack"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
