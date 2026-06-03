@@ -1,0 +1,16 @@
+# Dependencies & build artifacts — Vercel installs/builds these itself
+node_modules
+.next
+.vercel
+
+# Version control
+.git
+
+# Local design source files, not needed for the build
+Assets
+*.xlsx
+*.csv
+
+# Editor / OS noise
+.DS_Store
+.claude
