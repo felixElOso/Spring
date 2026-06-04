@@ -8,13 +8,12 @@ interface Props {
 }
 
 export function OverviewBlock({ block }: Props) {
-  const isContained = block.layout !== 'full-width'
   const paragraphs = block.body.split(/\n\n+/).filter((p) => p.trim().length > 0)
 
   return (
-    <div
-      className={`py-12 md:py-16 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
-    >
+    // Full-width container — mirrors the Impact (Stats) block so the content
+    // shares the same left edge and the divider spans edge to edge.
+    <div className="py-12 md:py-16">
       {/* Divider — full-width rule separating the Impact section above from the overview */}
       <div className="h-px w-full bg-border" />
 
@@ -26,7 +25,7 @@ export function OverviewBlock({ block }: Props) {
         className="section-pad flex flex-col gap-12 lg:flex-row lg:gap-[140px] pt-12 md:pt-16"
       >
         {/* Body — primary column */}
-        <div className="flex flex-col gap-5 lg:max-w-[648px]">
+        <div className="flex flex-col gap-5 lg:w-[648px] lg:flex-shrink-0">
           {block.title && (
             <h3 className="text-xl font-medium leading-[1.4] tracking-[-0.02em] text-muted-foreground">
               {block.title}
@@ -41,9 +40,9 @@ export function OverviewBlock({ block }: Props) {
           </div>
         </div>
 
-        {/* Credits — side rail */}
+        {/* Credits — side rail, sits right after the body column */}
         {block.credits && block.credits.length > 0 && (
-          <div className="flex flex-1 flex-col gap-10">
+          <div className="flex flex-col gap-10">
             {block.credits.map((col) => (
               <div key={col._key} className="flex flex-col gap-5">
                 <p className="text-xl font-medium leading-[1.4] tracking-[-0.02em] text-muted-foreground">
