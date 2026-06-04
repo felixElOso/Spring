@@ -15,12 +15,17 @@ export function OverviewBlock({ block }: Props) {
     <div
       className={`py-12 md:py-16 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
+      {/* Divider — separates the Impact section above from the overview */}
+      <div className="section-pad">
+        <div className="h-px w-full bg-border" />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="section-pad flex flex-col gap-12 lg:flex-row lg:gap-[140px]"
+        className="section-pad flex flex-col gap-12 lg:flex-row lg:gap-[140px] pt-12 md:pt-16"
       >
         {/* Body — primary column */}
         <div className="flex flex-col gap-5 lg:max-w-[648px]">
