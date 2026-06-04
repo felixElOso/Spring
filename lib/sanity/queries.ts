@@ -44,7 +44,11 @@ export const getProjectBySlugQuery = groq`
       _type == "galleryBlock" => { ..., images[] { ..., image { ..., asset-> } } },
       _type == "videoBlock" => { ..., file { asset-> } },
       _type == "animationBlock" => { ..., lottieFile { asset-> }, gifImage { ..., asset-> } },
-      _type == "imageMosaicBlock" => { ..., images[] { ..., image { ..., asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } } },
+      _type == "imageMosaicBlock" => {
+        ...,
+        images[] { ..., image { ..., asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
+        rows[] { ..., images[] { ..., image { ..., asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } } },
+      },
       _type == "marqueeGalleryBlock" => { ..., rows[] { ..., images[] { ..., image { ..., asset-> }, companionImage { ..., asset-> } } } },
       _type == "beforeAfterBlock" => { ..., beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
     },

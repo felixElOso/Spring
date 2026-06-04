@@ -5,7 +5,7 @@ import { urlFor } from '@/lib/sanity/client'
 import { Media, MEDIA_OUTER, MEDIA_SPACING } from '@/components/ui/media'
 import { BeforeAfterSlider } from '@/components/ui/BeforeAfterSlider'
 import type { MediaLayout } from '@/components/ui/media'
-import type { ImageMosaicBlock as ImageMosaicBlockType, ImageMosaicImage } from '@/lib/sanity/types'
+import type { ImageMosaicBlock as ImageMosaicBlockType, ImageMosaicImage, ImageMosaicRow } from '@/lib/sanity/types'
 
 interface Props {
   block: ImageMosaicBlockType
@@ -123,13 +123,46 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
   )
 }
 
+function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolean }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {rows.map((row, i) => {
+        const items = row.images ?? []
+        if (items.length === 0) return null
+        // Each image in a row shares the width evenly. Stacks on mobile,
+        // side-by-side from md up. Width hint scales with images-per-row.
+        const perRowWidth = items.length === 1 ? 2400 : items.length === 2 ? 1600 : 1200
+        const sizes =
+          items.length === 1
+            ? '100vw'
+            : `(max-width: 768px) 100vw, ${Math.round(100 / items.length)}vw`
+        return (
+          <div key={row._key || i} className="flex flex-col gap-4 md:flex-row">
+            {items.map((item, j) => (
+              <div key={item._key || j} className="min-w-0 flex-1 md:basis-0">
+                <MosaicItem item={item} width={perRowWidth} rounded={rounded} sizes={sizes} />
+              </div>
+            ))}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export function ImageMosaicBlock({ block }: Props) {
   const layout = (block.layout as MediaLayout) ?? 'full-width'
   const images = block.images ?? []
+  const rows = block.rows ?? []
   const mosaicStyle = block.mosaicStyle ?? 'side-by-side'
   const rounded = layout !== 'full-bleed'
 
-  if (images.length < 2) return null
+  // Guard: each style needs its own content present.
+  if (mosaicStyle === 'rows') {
+    if (rows.length === 0 || rows.every((r) => (r.images ?? []).length === 0)) return null
+  } else if (images.length < 2) {
+    return null
+  }
 
   return (
     <motion.div
@@ -139,7 +172,9 @@ export function ImageMosaicBlock({ block }: Props) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
-      {mosaicStyle === 'feature' ? (
+      {mosaicStyle === 'rows' ? (
+        <RowsLayout rows={rows} rounded={rounded} />
+      ) : mosaicStyle === 'feature' ? (
         <FeatureLayout images={images} rounded={rounded} />
       ) : (
         <SideBySideLayout images={images} rounded={rounded} />

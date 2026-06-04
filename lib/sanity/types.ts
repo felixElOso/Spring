@@ -138,11 +138,17 @@ export interface ImageMosaicImage {
   size: 'large' | 'small'
 }
 
+export interface ImageMosaicRow {
+  _key: string
+  images: ImageMosaicImage[]
+}
+
 export interface ImageMosaicBlock {
   _type: 'imageMosaicBlock'
   _key: string
   images: ImageMosaicImage[]
-  mosaicStyle?: 'side-by-side' | 'feature'
+  rows?: ImageMosaicRow[]
+  mosaicStyle?: 'side-by-side' | 'feature' | 'rows'
   layout: BlockLayout
 }
 
