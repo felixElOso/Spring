@@ -103,6 +103,21 @@ export interface StatsBlock {
   layout: BlockLayout
 }
 
+export interface OverviewCreditsColumn {
+  _key: string
+  label: string
+  items: string[]
+}
+
+export interface OverviewBlock {
+  _type: 'overviewBlock'
+  _key: string
+  title?: string
+  body: string
+  credits?: OverviewCreditsColumn[]
+  layout: BlockLayout
+}
+
 export interface HeadingBlock {
   _type: 'headingBlock'
   _key: string
@@ -172,7 +187,7 @@ export interface BeforeAfterBlock {
   layout: BlockLayout
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock | BeforeAfterBlock
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock | BeforeAfterBlock
 
 export interface Project {
   _id: string

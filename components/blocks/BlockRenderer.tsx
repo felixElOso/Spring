@@ -5,6 +5,7 @@ import { VideoBlock } from './VideoBlock'
 import { AnimationBlock } from './AnimationBlock'
 import { TextBlockRenderer } from './TextBlock'
 import { StatsBlock } from './StatsBlock'
+import { OverviewBlock } from './OverviewBlock'
 import { HeadingBlock } from './HeadingBlock'
 import { ImageMosaicBlock } from './ImageMosaicBlock'
 import { MarqueeGalleryBlock } from './MarqueeGalleryBlock'
@@ -71,6 +72,8 @@ function renderBlock(block: ContentBlock) {
       return <TextBlockRenderer key={block._key} block={block} />
     case 'statsBlock':
       return <StatsBlock key={block._key} block={block} />
+    case 'overviewBlock':
+      return <OverviewBlock key={block._key} block={block} />
     case 'headingBlock':
       return <HeadingBlock key={block._key} block={block} />
     case 'imageMosaicBlock':
