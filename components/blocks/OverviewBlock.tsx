@@ -12,10 +12,13 @@ export function OverviewBlock({ block }: Props) {
 
   return (
     // Full-width container — mirrors the Impact (Stats) block so the content
-    // shares the same left edge and the divider spans edge to edge.
+    // shares the same left edge.
     <div className="py-12 md:py-16">
-      {/* Divider — full-width rule separating the Impact section above from the overview */}
-      <div className="h-px w-full bg-border" />
+      {/* Divider — inset to the section padding so it aligns with the content
+          rather than running flush to the browser edges. */}
+      <div className="section-pad">
+        <div className="h-px w-full bg-border" />
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
