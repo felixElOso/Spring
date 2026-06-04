@@ -70,7 +70,7 @@ function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rou
   const hasStackedGroup = groups.some((g) => g.length > 1)
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
       {groups.map((group, i) => {
         const isLarge = group[0].size === 'large'
         const span = even ? 'md:col-span-6' : isLarge ? 'md:col-span-7' : 'md:col-span-5'
@@ -86,7 +86,7 @@ function SideBySideLayout({ images, rounded }: { images: ImageMosaicImage[]; rou
         }
 
         return (
-          <div key={group[0]._key || i} className={`${span} flex flex-col gap-4`}>
+          <div key={group[0]._key || i} className={`${span} flex flex-col gap-10`}>
             {group.map((item, j) => (
               <MosaicItem key={item._key || j} item={item} width={1600} rounded={rounded} />
             ))}
@@ -101,7 +101,7 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
   const [feature, ...rest] = images
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-10">
       {/* Large feature image on top */}
       <div>
         <MosaicItem item={feature} width={2400} rounded={rounded} sizes="100vw" />
@@ -109,7 +109,7 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
 
       {/* Smaller images below in a row */}
       {rest.length > 0 && (
-        <div className={`grid grid-cols-1 gap-4 ${
+        <div className={`grid grid-cols-1 gap-10 ${
           rest.length === 1 ? 'md:grid-cols-1' :
           rest.length === 2 ? 'md:grid-cols-2' :
           'md:grid-cols-3'
@@ -125,7 +125,7 @@ function FeatureLayout({ images, rounded }: { images: ImageMosaicImage[]; rounde
 
 function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolean }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-10">
       {rows.map((row, i) => {
         const items = row.images ?? []
         if (items.length === 0) return null
@@ -137,7 +137,7 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
             ? '100vw'
             : `(max-width: 768px) 100vw, ${Math.round(100 / items.length)}vw`
         return (
-          <div key={row._key || i} className="flex flex-col gap-4 md:flex-row">
+          <div key={row._key || i} className="flex flex-col gap-10 md:flex-row">
             {items.map((item, j) => (
               <div key={item._key || j} className="min-w-0 flex-1 md:basis-0">
                 <MosaicItem item={item} width={perRowWidth} rounded={rounded} sizes={sizes} />
