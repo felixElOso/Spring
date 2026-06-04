@@ -15,10 +15,8 @@ export function OverviewBlock({ block }: Props) {
     <div
       className={`py-12 md:py-16 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
-      {/* Divider — separates the Impact section above from the overview */}
-      <div className="section-pad">
-        <div className="h-px w-full bg-border" />
-      </div>
+      {/* Divider — full-width rule separating the Impact section above from the overview */}
+      <div className="h-px w-full bg-border" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
