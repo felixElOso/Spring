@@ -36,6 +36,13 @@ const mosaicImageFields = [
     },
     initialValue: 'large',
   },
+  {
+    name: 'stroke',
+    type: 'boolean',
+    title: 'Stroke',
+    description: 'Add a subtle 1px border around this image.',
+    initialValue: false,
+  },
 ]
 
 const mosaicImagePreview = {

@@ -30,6 +30,7 @@ export interface ImageBlock {
   altText?: string
   aspectRatio?: string
   layout: BlockLayout
+  stroke?: boolean
 }
 
 export interface GalleryImage {
@@ -136,6 +137,7 @@ export interface ImageMosaicImage {
   caption?: string
   altText?: string
   size: 'large' | 'small'
+  stroke?: boolean
 }
 
 export interface ImageMosaicRow {

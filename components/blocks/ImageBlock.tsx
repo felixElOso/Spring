@@ -25,6 +25,7 @@ export function ImageBlock({ block }: Props) {
       aspectRatio={(block.aspectRatio as MediaRatio) ?? '16/9'}
       caption={block.caption}
       rounded={rounded}
+      stroke={block.stroke}
     />
   )
 }

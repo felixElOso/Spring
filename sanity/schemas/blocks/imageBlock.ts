@@ -54,6 +54,13 @@ export const imageBlock = defineType({
       },
       initialValue: 'full-width',
     }),
+    defineField({
+      name: 'stroke',
+      title: 'Stroke',
+      type: 'boolean',
+      description: 'Add a subtle 1px border around the image.',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {

@@ -13,13 +13,15 @@ interface Props {
 
 function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMosaicImage; width: number; rounded?: boolean; sizes?: string; fillHeight?: boolean }) {
   const isBeforeAfter = item.mediaType === 'beforeAfter' && item.beforeImage && item.afterImage
+  // Stroke is controlled per-image, so each mosaic item can opt in independently.
+  const stroke = item.stroke ?? false
 
   if (isBeforeAfter) {
     const beforeUrl = urlFor(item.beforeImage!).width(width).quality(90).auto('format').fit('max').url()
     const afterUrl = urlFor(item.afterImage!).width(width).quality(90).auto('format').fit('max').url()
 
     return (
-      <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${fillHeight ? 'h-full' : ''}`}>
+      <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''} ${fillHeight ? 'h-full' : ''}`}>
         <BeforeAfterSlider
           beforeUrl={beforeUrl}
           afterUrl={afterUrl}
@@ -35,7 +37,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
   }
 
   return (
-    <div className={rounded ? 'overflow-hidden rounded-3xl' : ''}>
+    <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
       <Media
         type="image"
         src={urlFor(item.image).width(width).quality(90).auto('format').fit('max').url()}

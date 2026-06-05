@@ -37,6 +37,7 @@ export interface MediaProps {
   // ── Misc ───────────────────────────────────────────────
   animate?:      boolean
   rounded?:      boolean
+  stroke?:       boolean        // 1px border on the media surface
   className?:    string
   style?:        React.CSSProperties
   onMouseEnter?: React.MouseEventHandler<HTMLElement>
@@ -148,6 +149,7 @@ export function Media({
   controls    = true,
   animate     = true,
   rounded     = false,
+  stroke      = false,
   className,
   style,
   onMouseEnter,
@@ -178,7 +180,7 @@ export function Media({
   const content = (
     <>
       {/* ── Media surface ─────────────────────────────────── */}
-      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl')}>
+      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl', stroke && 'border border-foreground/30')}>
 
         {/* Image */}
         {type === 'image' && src && aspectRatio === 'auto' && (
