@@ -9,6 +9,7 @@ import { OverviewBlock } from './OverviewBlock'
 import { HeadingBlock } from './HeadingBlock'
 import { ImageMosaicBlock } from './ImageMosaicBlock'
 import { MarqueeGalleryBlock } from './MarqueeGalleryBlock'
+import { MediaStripBlock } from './MediaStripBlock'
 import { QuoteBlock } from './QuoteBlock'
 import { BeforeAfterBlock } from './BeforeAfterBlock'
 import type { ContentBlock } from '@/lib/sanity/types'
@@ -80,6 +81,8 @@ function renderBlock(block: ContentBlock) {
       return <ImageMosaicBlock key={block._key} block={block} />
     case 'marqueeGalleryBlock':
       return <MarqueeGalleryBlock key={block._key} block={block} />
+    case 'mediaStripBlock':
+      return <MediaStripBlock key={block._key} block={block} />
     case 'quoteBlock':
       return <QuoteBlock key={block._key} block={block} />
     case 'beforeAfterBlock':

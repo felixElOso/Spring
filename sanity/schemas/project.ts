@@ -135,6 +135,7 @@ export const project = defineType({
         { type: 'headingBlock' },
         { type: 'imageMosaicBlock' },
         { type: 'marqueeGalleryBlock' },
+        { type: 'mediaStripBlock' },
         { type: 'quoteBlock' },
         { type: 'beforeAfterBlock' },
       ],

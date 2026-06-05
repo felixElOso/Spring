@@ -46,10 +46,15 @@ export const getProjectBySlugQuery = groq`
       _type == "animationBlock" => { ..., lottieFile { asset-> }, gifImage { ..., asset-> } },
       _type == "imageMosaicBlock" => {
         ...,
-        images[] { ..., image { ..., asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
-        rows[] { ..., images[] { ..., image { ..., asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } } },
+        images[] { ..., image { ..., asset-> }, videoFile { asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
+        rows[] {
+          ...,
+          images[] { ..., image { ..., asset-> }, videoFile { asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
+          cells[] { ..., images[] { ..., image { ..., asset-> }, videoFile { asset-> }, beforeImage { ..., asset-> }, afterImage { ..., asset-> } } },
+        },
       },
       _type == "marqueeGalleryBlock" => { ..., rows[] { ..., images[] { ..., image { ..., asset-> }, companionImage { ..., asset-> } } } },
+      _type == "mediaStripBlock" => { ..., items[] { ..., image { ..., asset-> }, videoFile { asset-> } } },
       _type == "beforeAfterBlock" => { ..., beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
     },
     seo {

@@ -11,10 +11,27 @@ interface Props {
   block: ImageMosaicBlockType
 }
 
+// Converts a public Vimeo / YouTube URL into an embed URL. Mirrors VideoBlock.
+function toEmbedUrl(url: string, autoplay: boolean): string {
+  if (url.includes('vimeo.com')) {
+    const id = url.split('/').pop()
+    return `https://player.vimeo.com/video/${id}?autoplay=${autoplay ? 1 : 0}&muted=1&loop=1&background=${autoplay ? 1 : 0}`
+  }
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    const id = url.includes('youtu.be')
+      ? url.split('/').pop()
+      : new URL(url).searchParams.get('v')
+    return `https://www.youtube.com/embed/${id}?autoplay=${autoplay ? 1 : 0}&mute=1&loop=1`
+  }
+  return url
+}
+
 function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMosaicImage; width: number; rounded?: boolean; sizes?: string; fillHeight?: boolean }) {
   const isBeforeAfter = item.mediaType === 'beforeAfter' && item.beforeImage && item.afterImage
+  const isVideo = item.mediaType === 'video'
   // Stroke is controlled per-image, so each mosaic item can opt in independently.
   const stroke = item.stroke ?? false
+  const aspectRatio = item.size === 'large' ? '3/2' : '4/3'
 
   if (isBeforeAfter) {
     const beforeUrl = urlFor(item.beforeImage!).width(width).quality(90).auto('format').fit('max').url()
@@ -36,11 +53,78 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
     )
   }
 
+  if (isVideo) {
+    const autoplay = item.videoAutoplay ?? false
+    const isFile = item.videoType === 'file'
+    const fileSrc = item.videoFile?.asset?.url
+    const embedSrc = item.videoUrl ? toEmbedUrl(item.videoUrl, autoplay) : undefined
+    const src = isFile ? fileSrc : embedSrc
+    if (!src) return null
+
+    // Surface fills its container; mobile keeps an aspect ratio (cells stack),
+    // and fillHeight stretches the surface to match a taller stacked cell at md+.
+    const surfaceClass = fillHeight
+      ? `relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
+      : `relative w-full overflow-hidden ${aspectRatio === '3/2' ? 'aspect-[3/2]' : 'aspect-[4/3]'} ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
+
+    return (
+      <div className={`flex flex-col ${fillHeight ? 'md:h-full' : ''}`}>
+        <div className={surfaceClass}>
+          {isFile ? (
+            <video
+              src={src}
+              autoPlay={autoplay}
+              loop
+              muted
+              playsInline
+              controls={!autoplay}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <iframe
+              src={src}
+              className="absolute inset-0 h-full w-full"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              title={item.altText || item.caption || 'Video'}
+            />
+          )}
+        </div>
+        {item.caption && (
+          <p className="mt-3 text-sm text-foreground/50">{item.caption}</p>
+        )}
+      </div>
+    )
+  }
+
+  const imgSrc = urlFor(item.image).width(width).quality(90).auto('format').fit('max').url()
+
+  // When asked to fill height (a single-image cell sitting beside a taller
+  // stacked cell), keep a normal aspect ratio on mobile — where cells stack
+  // vertically — and only stretch to fill the row height from md up.
+  if (fillHeight) {
+    return (
+      <div className="flex flex-col md:h-full">
+        <div className={`relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imgSrc}
+            alt={item.altText || ''}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+        {item.caption && (
+          <p className="mt-3 text-sm text-foreground/50">{item.caption}</p>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
       <Media
         type="image"
-        src={urlFor(item.image).width(width).quality(90).auto('format').fit('max').url()}
+        src={imgSrc}
         alt={item.altText || ''}
         layout="thumbnail"
         aspectRatio={item.size === 'large' ? '3/2' : '4/3'}
@@ -129,20 +213,42 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
   return (
     <div className="flex flex-col gap-10">
       {rows.map((row, i) => {
-        const items = row.images ?? []
-        if (items.length === 0) return null
-        // Each image in a row shares the width evenly. Stacks on mobile,
-        // side-by-side from md up. Width hint scales with images-per-row.
-        const perRowWidth = items.length === 1 ? 2400 : items.length === 2 ? 1600 : 1200
+        // A cell holds one image or a vertical stack. Fall back to the legacy
+        // flat `images` list (each image = its own single-image cell).
+        const cells: ImageMosaicImage[][] =
+          row.cells && row.cells.length > 0
+            ? row.cells.map((c) => c.images ?? [])
+            : (row.images ?? []).map((img) => [img])
+
+        const validCells = cells.filter((c) => c.length > 0)
+        if (validCells.length === 0) return null
+
+        // Each cell shares the row width evenly. Stacks on mobile, side-by-side
+        // from md up. Width hint scales with cells-per-row.
+        const perCellWidth = validCells.length === 1 ? 2400 : validCells.length === 2 ? 1600 : 1200
         const sizes =
-          items.length === 1
+          validCells.length === 1
             ? '100vw'
-            : `(max-width: 768px) 100vw, ${Math.round(100 / items.length)}vw`
+            : `(max-width: 768px) 100vw, ${Math.round(100 / validCells.length)}vw`
+
+        // If any cell stacks multiple images, single-image cells stretch to
+        // match the taller stacked cell's height when side-by-side.
+        const hasStackedCell = validCells.some((c) => c.length > 1)
+
         return (
-          <div key={row._key || i} className="flex flex-col gap-10 md:flex-row">
-            {items.map((item, j) => (
-              <div key={item._key || j} className="min-w-0 flex-1 md:basis-0">
-                <MosaicItem item={item} width={perRowWidth} rounded={rounded} sizes={sizes} />
+          <div key={row._key || i} className="flex flex-col gap-10 md:flex-row md:items-stretch">
+            {validCells.map((cellImages, j) => (
+              <div key={j} className="min-w-0 flex-1 md:basis-0 flex flex-col gap-10">
+                {cellImages.map((item, k) => (
+                  <MosaicItem
+                    key={item._key || k}
+                    item={item}
+                    width={perCellWidth}
+                    rounded={rounded}
+                    sizes={sizes}
+                    fillHeight={hasStackedCell && cellImages.length === 1}
+                  />
+                ))}
               </div>
             ))}
           </div>
@@ -159,9 +265,12 @@ export function ImageMosaicBlock({ block }: Props) {
   const mosaicStyle = block.mosaicStyle ?? 'side-by-side'
   const rounded = layout !== 'full-bleed'
 
-  // Guard: each style needs its own content present.
+  // Guard: each style needs its own content present. A row counts as populated
+  // if it has cells with images, or legacy flat images.
+  const rowHasImages = (r: ImageMosaicRow) =>
+    (r.cells ?? []).some((c) => (c.images ?? []).length > 0) || (r.images ?? []).length > 0
   if (mosaicStyle === 'rows') {
-    if (rows.length === 0 || rows.every((r) => (r.images ?? []).length === 0)) return null
+    if (rows.length === 0 || rows.every((r) => !rowHasImages(r))) return null
   } else if (images.length < 2) {
     return null
   }

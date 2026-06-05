@@ -10,13 +10,33 @@ const mosaicImageFields = [
     options: {
       list: [
         { title: 'Image', value: 'image' },
+        { title: 'Video', value: 'video' },
         { title: 'Before / After', value: 'beforeAfter' },
       ],
       layout: 'radio',
     },
     initialValue: 'image',
   },
-  { name: 'image', type: 'image', title: 'Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType === 'beforeAfter' },
+  { name: 'image', type: 'image', title: 'Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType !== 'image' && parent?.mediaType !== undefined },
+  // ── Video (file or Vimeo/YouTube embed) ──────────────────────────────────
+  {
+    name: 'videoType',
+    type: 'string',
+    title: 'Video Source',
+    options: {
+      list: [
+        { title: 'Vimeo', value: 'vimeo' },
+        { title: 'YouTube', value: 'youtube' },
+        { title: 'Uploaded File', value: 'file' },
+      ],
+    },
+    initialValue: 'file',
+    hidden: ({ parent }: any) => parent?.mediaType !== 'video',
+  },
+  { name: 'videoUrl', type: 'url', title: 'Video URL (Vimeo/YouTube)', hidden: ({ parent }: any) => parent?.mediaType !== 'video' || parent?.videoType === 'file' },
+  { name: 'videoFile', type: 'file', title: 'Video File', options: { accept: 'video/*' }, hidden: ({ parent }: any) => parent?.mediaType !== 'video' || (parent?.videoType && parent?.videoType !== 'file') },
+  { name: 'videoAutoplay', type: 'boolean', title: 'Autoplay (always muted)', initialValue: false, hidden: ({ parent }: any) => parent?.mediaType !== 'video' },
+  // ── Before / After ───────────────────────────────────────────────────────
   { name: 'beforeImage', type: 'image', title: 'Before Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
   { name: 'afterImage', type: 'image', title: 'After Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
   { name: 'beforeLabel', type: 'string', title: 'Before Label', initialValue: 'Before', hidden: ({ parent }: any) => parent?.mediaType !== 'beforeAfter' },
@@ -46,12 +66,14 @@ const mosaicImageFields = [
 ]
 
 const mosaicImagePreview = {
-  select: { title: 'altText', media: 'image', beforeImage: 'beforeImage', size: 'size', mediaType: 'mediaType' },
-  prepare({ title, media, beforeImage, size, mediaType }: any) {
+  select: { title: 'altText', media: 'image', beforeImage: 'beforeImage', size: 'size', mediaType: 'mediaType', caption: 'caption', videoType: 'videoType' },
+  prepare({ title, media, beforeImage, size, mediaType, caption, videoType }: any) {
     const isBA = mediaType === 'beforeAfter'
+    const isVideo = mediaType === 'video'
+    const kind = isBA ? 'Before/After' : isVideo ? 'Video' : 'Image'
     return {
-      title: title || (isBA ? 'Before / After' : 'Image'),
-      subtitle: `${isBA ? 'Before/After' : 'Image'} · ${size === 'large' ? 'Large' : 'Small'}`,
+      title: title || caption || kind,
+      subtitle: `${kind} · ${size === 'large' ? 'Large' : 'Small'}${isVideo && videoType ? ` (${videoType})` : ''}`,
       media: isBA ? beforeImage : media,
     }
   },
@@ -100,7 +122,7 @@ export const imageMosaicBlock = defineType({
       name: 'rows',
       title: 'Rows',
       type: 'array',
-      description: 'Each row lays its images out side-by-side with equal widths. Stack multiple rows to mix side-by-side and top/bottom arrangements freely. One image in a row = full width; two = split in half; three = thirds, and so on.',
+      description: 'Each row lays its cells out side-by-side with equal widths. A cell holds one image, or several images stacked vertically — so you can put a large image on the left and two smaller stacked images on the right. Stack multiple rows to mix arrangements freely.',
       hidden: ({ parent }: any) => parent?.mosaicStyle !== 'rows',
       of: [
         {
@@ -108,21 +130,73 @@ export const imageMosaicBlock = defineType({
           name: 'mosaicRow',
           title: 'Row',
           fields: [
+            // Legacy flat image list — superseded by `cells`. Kept (hidden) so
+            // existing documents created before the cells change don't surface
+            // "unknown field" errors in the Studio. The renderer still reads it.
             {
               name: 'images',
-              title: 'Images in this row',
+              title: 'Images (legacy)',
               type: 'array',
               of: [mosaicImageObject],
-              validation: (Rule: any) => Rule.required().min(1).max(4),
+              // Hide once migrated to cells, or when there's no legacy data.
+              hidden: ({ parent }: any) =>
+                (parent?.cells?.length ?? 0) > 0 || !parent?.images || parent.images.length === 0,
+              readOnly: true,
+              description: 'Older content created before cells were introduced. Move these into Cells to edit them.',
+            },
+            {
+              name: 'cells',
+              title: 'Cells in this row',
+              description: 'Each cell sits side-by-side with the others. A cell with multiple images stacks them vertically.',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  name: 'mosaicCell',
+                  title: 'Cell',
+                  fields: [
+                    {
+                      name: 'images',
+                      title: 'Images in this cell',
+                      description: 'One image, or several stacked vertically.',
+                      type: 'array',
+                      of: [mosaicImageObject],
+                      validation: (Rule: any) => Rule.required().min(1).max(4),
+                    },
+                  ],
+                  preview: {
+                    select: { images: 'images' },
+                    prepare({ images }: any) {
+                      const count = images?.length || 0
+                      const first = images?.[0]
+                      return {
+                        title: count > 1 ? `Cell · ${count} stacked` : 'Cell · 1 image',
+                        media: first?.mediaType === 'beforeAfter' ? first?.beforeImage : first?.image,
+                      }
+                    },
+                  },
+                },
+              ],
+              // Required unless this is a legacy row that still stores its
+              // images in the old flat `images` field.
+              validation: (Rule: any) =>
+                Rule.max(4).custom((cells: unknown[] | undefined, context: any) => {
+                  const hasLegacy = (context?.parent?.images?.length ?? 0) > 0
+                  if (hasLegacy) return true
+                  if (!cells || cells.length < 1) return 'Add at least 1 cell.'
+                  return true
+                }),
             },
           ],
           preview: {
-            select: { images: 'images' },
-            prepare({ images }: any) {
-              const count = images?.length || 0
-              const first = images?.[0]
+            select: { cells: 'cells', images: 'images' },
+            prepare({ cells, images }: any) {
+              // Prefer cells; fall back to the legacy flat `images` list.
+              const count = cells?.length || images?.length || 0
+              const unit = cells?.length ? 'cell' : 'image'
+              const first = cells?.[0]?.images?.[0] || images?.[0]
               return {
-                title: `Row · ${count} image${count !== 1 ? 's' : ''} side-by-side`,
+                title: `Row · ${count} ${unit}${count !== 1 ? 's' : ''} side-by-side`,
                 media: first?.mediaType === 'beforeAfter' ? first?.beforeImage : first?.image,
               }
             },
@@ -166,8 +240,12 @@ export const imageMosaicBlock = defineType({
     prepare({ images, rows, mosaicStyle }) {
       if (mosaicStyle === 'rows') {
         const rowCount = rows?.length || 0
-        const imgCount = (rows || []).reduce((n: number, r: any) => n + (r?.images?.length || 0), 0)
-        const firstImg = rows?.[0]?.images?.[0]
+        const imgCount = (rows || []).reduce(
+          (n: number, r: any) =>
+            n + (r?.cells || []).reduce((m: number, c: any) => m + (c?.images?.length || 0), 0),
+          0
+        )
+        const firstImg = rows?.[0]?.cells?.[0]?.images?.[0]
         return {
           title: `${imgCount} image${imgCount !== 1 ? 's' : ''} · ${rowCount} row${rowCount !== 1 ? 's' : ''}`,
           subtitle: 'Image Mosaic · Custom Rows',

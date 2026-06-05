@@ -128,8 +128,14 @@ export interface HeadingBlock {
 
 export interface ImageMosaicImage {
   _key: string
-  mediaType?: 'image' | 'beforeAfter'
+  mediaType?: 'image' | 'video' | 'beforeAfter'
   image: SanityImage
+  // Video (file or Vimeo/YouTube embed)
+  videoType?: 'vimeo' | 'youtube' | 'file'
+  videoUrl?: string
+  videoFile?: { asset: { url: string } }
+  videoAutoplay?: boolean
+  // Before / After
   beforeImage?: SanityImage
   afterImage?: SanityImage
   beforeLabel?: string
@@ -140,9 +146,16 @@ export interface ImageMosaicImage {
   stroke?: boolean
 }
 
-export interface ImageMosaicRow {
+export interface ImageMosaicCell {
   _key: string
   images: ImageMosaicImage[]
+}
+
+export interface ImageMosaicRow {
+  _key: string
+  cells?: ImageMosaicCell[]
+  /** Legacy flat image list — superseded by `cells`. Each image renders as its own cell. */
+  images?: ImageMosaicImage[]
 }
 
 export interface ImageMosaicBlock {
@@ -175,6 +188,26 @@ export interface MarqueeGalleryBlock {
   layout: BlockLayout
 }
 
+export interface MediaStripItem {
+  _key: string
+  mediaType?: 'image' | 'video'
+  image: SanityImage
+  // Video (file or Vimeo/YouTube embed)
+  videoType?: 'vimeo' | 'youtube' | 'file'
+  videoUrl?: string
+  videoFile?: { asset: { url: string } }
+  videoAspect?: '16/9' | '4/3' | '3/2' | '1/1' | '9/16'
+  altText?: string
+}
+
+export interface MediaStripBlock {
+  _type: 'mediaStripBlock'
+  _key: string
+  items: MediaStripItem[]
+  height: 'small' | 'medium' | 'large'
+  layout: BlockLayout
+}
+
 export interface QuoteBlock {
   _type: 'quoteBlock'
   _key: string
@@ -195,7 +228,7 @@ export interface BeforeAfterBlock {
   layout: BlockLayout
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | QuoteBlock | BeforeAfterBlock
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock
 
 export interface Project {
   _id: string
