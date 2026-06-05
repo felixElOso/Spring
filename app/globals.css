@@ -212,3 +212,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Collapse the footer's top margin when it directly follows the
+   Next Project teaser (project detail pages), so the teaser sits
+   flush against the footer. Unlayered so it overrides the footer's
+   mt-32 utility (Tailwind utilities live in a higher-priority layer). */
+main:has(> :last-child > .next-project-teaser:last-child) + footer {
+  margin-top: 0;
+}

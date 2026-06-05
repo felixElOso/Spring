@@ -13,7 +13,7 @@ export function OverviewBlock({ block }: Props) {
   return (
     // Full-width container — mirrors the Impact (Stats) block so the content
     // shares the same left edge.
-    <div className="py-12 md:py-16">
+    <div>
       {/* Divider — inset to the section padding so it aligns with the content
           rather than running flush to the browser edges. */}
       <div className="section-pad">

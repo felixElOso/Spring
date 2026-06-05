@@ -95,7 +95,10 @@ export function BlockRenderer({ blocks }: Props) {
   const grouped = groupBlocks(blocks)
 
   return (
-    <>
+    // Consistent vertical rhythm between content blocks: 200px on desktop,
+    // scaled down on mobile. Each block's own root vertical padding is
+    // removed so this gap is the single source of truth for inter-block space.
+    <div className="flex flex-col gap-24 md:gap-[200px]">
       {grouped.map((item) => {
         if (item.type === 'half-row') {
           const isSingle = item.blocks.length === 1
@@ -104,8 +107,8 @@ export function BlockRenderer({ blocks }: Props) {
               key={item.blocks[0]._key + '-row'}
               className={
                 isSingle
-                  ? 'section-pad py-24 md:py-32 max-w-3xl mx-auto'
-                  : 'grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 section-pad py-24 md:py-32 max-w-[var(--max-w-content)] mx-auto'
+                  ? 'section-pad max-w-3xl mx-auto'
+                  : 'grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 section-pad max-w-[var(--max-w-content)] mx-auto'
               }
             >
               {item.blocks.map((block) => renderBlock(block))}
@@ -114,6 +117,6 @@ export function BlockRenderer({ blocks }: Props) {
         }
         return renderBlock(item.block)
       })}
-    </>
+    </div>
   )
 }

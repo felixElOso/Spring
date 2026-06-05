@@ -17,7 +17,7 @@ export function TextBlockRenderer({ block }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={isHalf ? '' : `section-pad py-24 md:py-32 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
+      className={isHalf ? '' : `section-pad ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
       <div className={isContained ? 'max-w-3xl mx-auto' : ''}>
         {block.title && (

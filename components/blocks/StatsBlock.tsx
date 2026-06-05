@@ -12,7 +12,7 @@ export function StatsBlock({ block }: Props) {
   const isContained = block.layout !== 'full-width'
   return (
     <div
-      className={`py-12 md:py-16 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
+      className={isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}
     >
       {block.title && (
         <motion.h3

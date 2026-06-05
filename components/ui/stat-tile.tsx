@@ -12,7 +12,7 @@ interface StatTileProps {
 
 export function StatTile({ value, label, description, className }: StatTileProps) {
   return (
-    <Card className={cn("h-full", className)}>
+    <Card className={cn("h-full rounded-3xl", className)}>
       <CardContent className="flex flex-col gap-16 p-8 md:p-10">
         <div className="text-[clamp(2.5rem,5vw,4.5rem)] font-medium leading-[1] tracking-tight text-foreground">
           {value}

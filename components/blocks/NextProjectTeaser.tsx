@@ -20,7 +20,7 @@ export function NextProjectTeaser({ project }: NextProjectTeaserProps) {
   return (
     <Link
       href={`/projects/${project.slug.current}`}
-      className="group block relative w-full overflow-hidden bg-secondary"
+      className="next-project-teaser group block relative w-full overflow-hidden bg-secondary"
       style={{ minHeight: "40vh" }}
     >
       {coverUrl && (

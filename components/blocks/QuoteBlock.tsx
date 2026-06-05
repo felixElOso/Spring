@@ -16,7 +16,7 @@ export function QuoteBlock({ block }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`section-pad py-16 md:py-24 ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
+      className={`section-pad ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
       <div className={isContained ? 'max-w-3xl mx-auto' : 'max-w-4xl mx-auto'}>
         <p className="text-2xl md:text-3xl lg:text-4xl font-medium text-muted-foreground leading-snug">
