@@ -8,7 +8,7 @@ import { NextProjectTeaser } from '@/components/blocks/NextProjectTeaser'
 import { flattenTitle } from '@/lib/utils'
 import type { Project } from '@/lib/sanity/types'
 
-export const revalidate = 60
+export const revalidate = 10
 
 interface Props {
   params: Promise<{ slug: string }>

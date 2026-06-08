@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'Meet the team behind the studio.',
 }
 
-export const revalidate = 60
+export const revalidate = 10
 
 export default async function AboutPage() {
   let team: TeamMember[] = []
