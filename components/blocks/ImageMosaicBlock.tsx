@@ -235,8 +235,19 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
         // match the taller stacked cell's height when side-by-side.
         const hasStackedCell = validCells.some((c) => c.length > 1)
 
+        // A fixed row height keeps every item tall (filling the row) instead of
+        // collapsing to its natural aspect ratio when placed side-by-side.
+        // Applied from md up; on mobile cells still stack at their own ratios.
+        const fixedHeight = row.rowHeight === 'tall' || row.rowHeight === 'xtall'
+        const rowHeightClass =
+          row.rowHeight === 'tall' ? 'md:h-[70vh]' : row.rowHeight === 'xtall' ? 'md:h-[90vh]' : ''
+
+        // Single-image cells fill the row height when it's fixed, or when a
+        // sibling cell stacks images and is therefore taller.
+        const fillSingleCells = fixedHeight || hasStackedCell
+
         return (
-          <div key={row._key || i} className="flex flex-col gap-10 md:flex-row md:items-stretch">
+          <div key={row._key || i} className={`flex flex-col gap-10 md:flex-row md:items-stretch ${rowHeightClass}`}>
             {validCells.map((cellImages, j) => (
               <div key={j} className="min-w-0 flex-1 md:basis-0 flex flex-col gap-10">
                 {cellImages.map((item, k) => (
@@ -246,7 +257,7 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
                     width={perCellWidth}
                     rounded={rounded}
                     sizes={sizes}
-                    fillHeight={hasStackedCell && cellImages.length === 1}
+                    fillHeight={fillSingleCells && cellImages.length === 1}
                   />
                 ))}
               </div>

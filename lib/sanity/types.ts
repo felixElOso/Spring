@@ -153,6 +153,8 @@ export interface ImageMosaicCell {
 
 export interface ImageMosaicRow {
   _key: string
+  /** Fixed row height so side-by-side items stay tall instead of shrinking to their natural aspect ratio. */
+  rowHeight?: 'auto' | 'tall' | 'xtall'
   cells?: ImageMosaicCell[]
   /** Legacy flat image list — superseded by `cells`. Each image renders as its own cell. */
   images?: ImageMosaicImage[]

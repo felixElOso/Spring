@@ -130,6 +130,22 @@ export const imageMosaicBlock = defineType({
           name: 'mosaicRow',
           title: 'Row',
           fields: [
+            {
+              name: 'rowHeight',
+              title: 'Row Height',
+              description:
+                'Auto lets each item keep its natural aspect ratio. Tall / Extra Tall give the whole row a fixed height (from tablet up) so every item stays tall and fills it — useful when two items side-by-side would otherwise shrink.',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Auto · natural aspect ratio', value: 'auto' },
+                  { title: 'Tall · 70vh', value: 'tall' },
+                  { title: 'Extra Tall · 90vh', value: 'xtall' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'auto',
+            },
             // Legacy flat image list — superseded by `cells`. Kept (hidden) so
             // existing documents created before the cells change don't surface
             // "unknown field" errors in the Studio. The renderer still reads it.
