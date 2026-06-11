@@ -32,6 +32,11 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
   // Stroke is controlled per-image, so each mosaic item can opt in independently.
   const stroke = item.stroke ?? false
   const aspectRatio = item.size === 'large' ? '3/2' : '4/3'
+  // 'contain' shows the whole image at its own ratio (never masked). It also
+  // wins over fillHeight for images: stretching to fill a row would re-introduce
+  // cropping, which defeats the point of asking for the full image.
+  const fitContain = item.fit === 'contain'
+  const fillHeightImage = fillHeight && !fitContain
 
   if (isBeforeAfter) {
     const beforeUrl = urlFor(item.beforeImage!).width(width).quality(90).auto('format').fit('max').url()
@@ -102,7 +107,8 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
   // When asked to fill height (a single-image cell sitting beside a taller
   // stacked cell), keep a normal aspect ratio on mobile — where cells stack
   // vertically — and only stretch to fill the row height from md up.
-  if (fillHeight) {
+  // Skipped when the editor chose Full ('contain'), which must never crop.
+  if (fillHeightImage) {
     return (
       <div className="flex flex-col md:h-full">
         <div className={`relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
@@ -127,7 +133,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
         src={imgSrc}
         alt={item.altText || ''}
         layout="thumbnail"
-        aspectRatio={item.size === 'large' ? '3/2' : '4/3'}
+        aspectRatio={fitContain ? 'auto' : item.size === 'large' ? '3/2' : '4/3'}
         caption={item.caption}
         sizes={sizes ?? '(max-width: 768px) 100vw, 50vw'}
         animate={false}

@@ -143,6 +143,8 @@ export interface ImageMosaicImage {
   caption?: string
   altText?: string
   size: 'large' | 'small'
+  /** 'crop' (default) fills a uniform box with object-cover; 'contain' shows the whole image at its natural ratio so it's never masked. */
+  fit?: 'crop' | 'contain'
   stroke?: boolean
 }
 

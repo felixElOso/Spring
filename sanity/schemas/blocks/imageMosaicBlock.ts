@@ -57,6 +57,21 @@ const mosaicImageFields = [
     initialValue: 'large',
   },
   {
+    name: 'fit',
+    type: 'string',
+    title: 'Fit',
+    description:
+      'Crop fills a uniform box and may trim the edges of the image (keeps a tidy grid). Full shows the entire image at its own shape — nothing is ever masked, even as the browser resizes. Use Full for headshots, logos, or anything that must not be cut off.',
+    options: {
+      list: [
+        { title: 'Crop · fill the box', value: 'crop' },
+        { title: 'Full · show whole image', value: 'contain' },
+      ],
+      layout: 'radio',
+    },
+    initialValue: 'crop',
+  },
+  {
     name: 'stroke',
     type: 'boolean',
     title: 'Stroke',
