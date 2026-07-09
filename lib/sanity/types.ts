@@ -261,11 +261,6 @@ export interface Project {
     description?: string
     ogImage?: SanityImage
   }
-  nextProject?: {
-    title: string
-    slug: SanitySlug
-    coverImage?: SanityImage
-  }
 }
 
 export interface TeamMember {

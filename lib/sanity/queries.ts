@@ -62,11 +62,6 @@ export const getProjectBySlugQuery = groq`
       description,
       ogImage { ..., asset-> },
     },
-    "nextProject": *[_type == "project" && slug.current != $slug] | order(featured desc, year desc)[0] {
-      title,
-      slug,
-      coverImage,
-    },
   }
 `
 
