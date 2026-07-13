@@ -16,6 +16,7 @@ export const videoBlock = defineType({
           { title: 'Uploaded File', value: 'file' },
         ],
       },
+      initialValue: 'file',
     }),
     defineField({
       name: 'url',

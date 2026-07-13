@@ -27,7 +27,10 @@ export function VideoBlock({ block }: Props) {
   const layout = (block.layout as MediaLayout) ?? 'contained'
 
   // ── File video ────────────────────────────────────────────────────────────
-  if (block.videoType === 'file' && block.file) {
+  // Render the uploaded file when Video Type is 'file' OR was never set —
+  // older blocks created before the field had a default would otherwise
+  // silently render nothing despite having a file attached.
+  if (block.file && (block.videoType === 'file' || !block.videoType)) {
     return (
       <Media
         type="video"
