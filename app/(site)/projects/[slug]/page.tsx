@@ -42,11 +42,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params
-  const project: Project | null = await client
-    .fetch(getProjectBySlugQuery, { slug })
-    .catch(() => null)
+  const [project, allProjects]: [Project | null, Project[]] = await Promise.all([
+    client.fetch(getProjectBySlugQuery, { slug }).catch(() => null),
+    client.fetch(getAllProjectsQuery).catch(() => []),
+  ])
 
   if (!project) notFound()
+
+  // Next project follows the homepage grid order, wrapping around at the end
+  const currentIndex = allProjects.findIndex((p) => p.slug.current === slug)
+  const nextProject =
+    allProjects.length > 1 && currentIndex !== -1
+      ? allProjects[(currentIndex + 1) % allProjects.length]
+      : null
 
   const coverUrl = project.coverImage
     ? urlFor(project.coverImage).width(2400).quality(90).auto('format').fit('max').url()
@@ -71,9 +79,7 @@ export default async function ProjectPage({ params }: Props) {
       )}
 
       {/* 3. Next project teaser */}
-      {project.nextProject && (
-        <NextProjectTeaser project={project.nextProject} />
-      )}
+      {nextProject && <NextProjectTeaser project={nextProject} />}
     </article>
   )
 }
