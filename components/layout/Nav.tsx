@@ -1,16 +1,27 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const lastY = useRef(0)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
+    const onScroll = () => {
+      const y = Math.max(window.scrollY, 0) // clamp iOS rubber-band bounce
+      setScrolled(y > 20)
+      // Small threshold so trackpad jitter doesn't flicker the nav.
+      if (Math.abs(y - lastY.current) > 4) {
+        // Hide only when moving down and past the header; any scroll up reveals.
+        setHidden(y > lastY.current && y > 120)
+        lastY.current = y
+      }
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
@@ -20,7 +31,7 @@ export function Nav() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? 'bg-background/90 backdrop-blur-md border-b border-border' : ''
-        }`}
+        } ${hidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'}`}
       >
         <div className="max-w-content mx-auto section-pad flex items-center justify-between h-20 lg:h-[103px]">
           <Link href="/" className="font-medium text-sm tracking-widest uppercase transition-colors duration-300 text-foreground">
