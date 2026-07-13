@@ -51,9 +51,12 @@ export const videoBlock = defineType({
           { title: '1:1   · Square',     value: '1/1'  },
           { title: '21:9  · Cinematic',  value: '21/9' },
           { title: '9:16  · Portrait',   value: '9/16' },
+          { title: 'Original · No crop', value: 'auto' },
         ],
       },
       initialValue: '16/9',
+      description:
+        'Original shows the video at its native proportions with no cropping. For Vimeo/YouTube embeds the player frame stays 16:9 (the player letterboxes inside it).',
     }),
     defineField({
       name: 'layout',

@@ -177,10 +177,15 @@ export function Media({
       }
     : {}
 
+  // 'auto' has no ratio class, so anything that relies on an absolutely-filled
+  // surface (iframe embeds, the empty-state placeholder) would collapse to
+  // zero height — those fall back to 16:9. File videos render in-flow instead.
+  const needsRatioFallback = aspectRatio === 'auto' && ((type === 'video' && embed) || !hasContent)
+
   const content = (
     <>
       {/* ── Media surface ─────────────────────────────────── */}
-      <div className={cn('relative w-full overflow-hidden', MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl', stroke && 'border border-foreground/30')}>
+      <div className={cn('relative w-full overflow-hidden', needsRatioFallback ? 'aspect-video' : MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl', stroke && 'border border-foreground/30')}>
 
         {/* Image */}
         {type === 'image' && src && aspectRatio === 'auto' && (
@@ -217,7 +222,9 @@ export function Media({
             muted={muted}
             playsInline
             controls={controls && !autoplay}
-            className="absolute inset-0 w-full h-full object-cover"
+            className={aspectRatio === 'auto'
+              ? 'w-full h-auto'
+              : 'absolute inset-0 w-full h-full object-cover'}
           />
         )}
 
