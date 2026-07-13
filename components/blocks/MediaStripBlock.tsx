@@ -131,10 +131,10 @@ export function MediaStripBlock({ block }: Props) {
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
       {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
-          Full-bleed strips get a 60px lead-in so the first item doesn't sit
-          flush against the viewport edge; other layouts already have padding. */}
+          Full-bleed strips get a 60px lead-in and lead-out so items never sit
+          flush against the viewport edges; other layouts already have padding. */}
       <div
-        className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${layout === 'full-bleed' ? 'pl-[60px]' : ''}`}
+        className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${layout === 'full-bleed' ? 'px-[60px]' : ''}`}
         style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
       >
         {items.map((item, i) => (
