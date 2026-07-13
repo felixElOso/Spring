@@ -23,7 +23,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
 
   return (
     <div
-      className="flex-shrink-0 h-[45vh] md:h-[55vh] xl:h-[70vh] max-h-[800px] rounded-sm"
+      className="flex-shrink-0 h-[45vh] md:h-[55vh] xl:h-[70vh] max-h-[800px] rounded-3xl"
       style={{ perspective: '1000px' }}
     >
       <div
@@ -32,7 +32,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
       >
         {/* Front */}
         <div
-          className="h-full overflow-hidden rounded-sm"
+          className="h-full overflow-hidden rounded-3xl"
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
@@ -49,7 +49,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
         {/* Back */}
         {hasCompanion && (
           <div
-            className="absolute inset-0 h-full overflow-hidden rounded-sm"
+            className="absolute inset-0 h-full overflow-hidden rounded-3xl"
             style={{
               backfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
@@ -94,7 +94,7 @@ export function MarqueeGalleryBlock({ block }: Props) {
         }
       `}</style>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-10">
         {block.rows?.map((row, rowIndex) => {
           const imageCount = row.images?.length || 1
           const duration = baseSpeed * (imageCount / 5)
@@ -107,7 +107,7 @@ export function MarqueeGalleryBlock({ block }: Props) {
               className="overflow-hidden"
             >
               <div
-                className={`flex gap-4 w-max will-change-transform ${block.pauseOnHover ? '[&:hover]:[animation-play-state:paused]' : ''}`}
+                className={`flex gap-10 w-max will-change-transform ${block.pauseOnHover ? '[&:hover]:[animation-play-state:paused]' : ''}`}
                 style={{
                   animation: `${animationName} ${duration}s linear infinite`,
                 }}
