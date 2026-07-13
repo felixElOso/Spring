@@ -268,6 +268,14 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
         // match the taller stacked cell's height when side-by-side.
         const hasStackedCell = validCells.some((c) => c.length > 1)
 
+        // A Full-fit item renders at its natural height and anchors the row —
+        // Crop siblings stretch to match it so side-by-side items stay equal
+        // height. (Only when one exists: if every cell were stretch-to-fill,
+        // nothing would define the row height and it would collapse.)
+        const hasContainCell = validCells.some((c) =>
+          c.some((it) => it.fit === 'contain')
+        )
+
         // A fixed row height keeps every item tall (filling the row) instead of
         // collapsing to its natural aspect ratio when placed side-by-side.
         // Applied from md up; on mobile cells still stack at their own ratios.
@@ -275,9 +283,11 @@ function RowsLayout({ rows, rounded }: { rows: ImageMosaicRow[]; rounded: boolea
         const rowHeightClass =
           row.rowHeight === 'tall' ? 'md:h-[70vh]' : row.rowHeight === 'xtall' ? 'md:h-[90vh]' : ''
 
-        // Single-image cells fill the row height when it's fixed, or when a
-        // sibling cell stacks images and is therefore taller.
-        const fillSingleCells = fixedHeight || hasStackedCell
+        // Single-image cells fill the row height when it's fixed, when a
+        // sibling cell stacks images and is therefore taller, or when a
+        // Full-fit sibling sets the row height in a multi-cell row.
+        const fillSingleCells =
+          fixedHeight || hasStackedCell || (validCells.length > 1 && hasContainCell)
 
         return (
           <div key={row._key || i} className={`flex flex-col gap-10 md:flex-row md:items-stretch ${rowHeightClass}`}>
