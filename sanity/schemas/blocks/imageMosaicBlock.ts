@@ -61,7 +61,7 @@ const mosaicImageFields = [
     type: 'string',
     title: 'Fit',
     description:
-      'Crop fills a uniform box and may trim the edges of the image (keeps a tidy grid). Full shows the entire image at its own shape — nothing is ever masked, even as the browser resizes. Use Full for headshots, logos, or anything that must not be cut off.',
+      'Crop fills a uniform box and may trim the edges (keeps a tidy grid). Full shows the entire image or video at its own shape — nothing is ever masked or stretched, even as the browser resizes. Use Full for headshots, logos, or videos whose proportions must be preserved. (Vimeo/YouTube embeds keep a 16:9 frame and letterbox inside it.)',
     options: {
       list: [
         { title: 'Crop · fill the box', value: 'crop' },

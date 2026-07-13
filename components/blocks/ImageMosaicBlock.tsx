@@ -66,11 +66,38 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
     const src = isFile ? fileSrc : embedSrc
     if (!src) return null
 
+    // 'Full' fit shows a file video at its native proportions — no box, no
+    // cropping. Like images, it wins over fillHeight: stretching to fill a row
+    // would re-introduce the distortion the editor opted out of.
+    if (fitContain && isFile) {
+      return (
+        <div className="flex flex-col">
+          <div className={`overflow-hidden ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
+            <video
+              src={src}
+              autoPlay={autoplay}
+              loop
+              muted
+              playsInline
+              controls={!autoplay}
+              className="w-full h-auto"
+            />
+          </div>
+          {item.caption && (
+            <p className="mt-3 text-sm text-foreground/50">{item.caption}</p>
+          )}
+        </div>
+      )
+    }
+
     // Surface fills its container; mobile keeps an aspect ratio (cells stack),
     // and fillHeight stretches the surface to match a taller stacked cell at md+.
-    const surfaceClass = fillHeight
+    // Embeds with 'Full' fit keep a 16:9 surface (an iframe's native ratio is
+    // unknowable) — the player letterboxes inside it, so nothing is cut off.
+    const boxAspect = fitContain ? 'aspect-video' : aspectRatio === '3/2' ? 'aspect-[3/2]' : 'aspect-[4/3]'
+    const surfaceClass = fillHeight && !fitContain
       ? `relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
-      : `relative w-full overflow-hidden ${aspectRatio === '3/2' ? 'aspect-[3/2]' : 'aspect-[4/3]'} ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
+      : `relative w-full overflow-hidden ${boxAspect} ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
 
     return (
       <div className={`flex flex-col ${fillHeight ? 'md:h-full' : ''}`}>
