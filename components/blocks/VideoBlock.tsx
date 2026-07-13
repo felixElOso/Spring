@@ -25,6 +25,7 @@ function toEmbedUrl(url: string, autoplay: boolean): string {
 
 export function VideoBlock({ block }: Props) {
   const layout = (block.layout as MediaLayout) ?? 'contained'
+  const rounded = layout !== 'full-bleed'
 
   // ── File video ────────────────────────────────────────────────────────────
   // Render the uploaded file when Video Type is 'file' OR was never set —
@@ -42,6 +43,7 @@ export function VideoBlock({ block }: Props) {
         loop
         muted
         controls={!block.autoplay}
+        rounded={rounded}
       />
     )
   }
@@ -56,6 +58,7 @@ export function VideoBlock({ block }: Props) {
         layout={layout}
         aspectRatio={(block.aspectRatio as MediaRatio) ?? '16/9'}
         caption={block.caption}
+        rounded={rounded}
       />
     )
   }
