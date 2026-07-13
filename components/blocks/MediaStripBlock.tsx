@@ -56,7 +56,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
     // Embeds can't report a ratio from inside an iframe, so they keep 16:9.
     if (item.videoAspect === 'auto' && isFile) {
       return (
-        <div className="h-full flex-shrink-0 overflow-hidden rounded-sm">
+        <div className="h-full flex-shrink-0 overflow-hidden rounded-3xl">
           <video
             src={src}
             autoPlay
@@ -75,7 +75,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
         : ASPECT_CLASS[item.videoAspect ?? '16/9'] ?? ASPECT_CLASS['16/9']
 
     return (
-      <div className={`relative h-full ${aspect} flex-shrink-0 overflow-hidden rounded-sm`}>
+      <div className={`relative h-full ${aspect} flex-shrink-0 overflow-hidden rounded-3xl`}>
         {isFile ? (
           <video
             src={src}
@@ -130,9 +130,11 @@ export function MediaStripBlock({ block }: Props) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
-      {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll. */}
+      {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
+          Full-bleed strips get a 60px lead-in so the first item doesn't sit
+          flush against the viewport edge; other layouts already have padding. */}
       <div
-        className={`flex gap-4 overflow-x-auto pb-4 ${heightClass}`}
+        className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${layout === 'full-bleed' ? 'pl-[60px]' : ''}`}
         style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
       >
         {items.map((item, i) => (
