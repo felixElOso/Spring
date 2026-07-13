@@ -35,7 +35,13 @@ export interface ImageBlock {
 
 export interface GalleryImage {
   _key: string
-  image: SanityImage
+  mediaType?: 'image' | 'video'
+  image?: SanityImage
+  // Video (file or Vimeo/YouTube embed)
+  videoType?: 'vimeo' | 'youtube' | 'file'
+  videoUrl?: string
+  videoFile?: { asset: { url: string } }
+  videoAutoplay?: boolean
   caption?: string
   altText?: string
 }
@@ -200,7 +206,7 @@ export interface MediaStripItem {
   videoType?: 'vimeo' | 'youtube' | 'file'
   videoUrl?: string
   videoFile?: { asset: { url: string } }
-  videoAspect?: '16/9' | '4/3' | '3/2' | '1/1' | '9/16'
+  videoAspect?: '16/9' | '4/3' | '3/2' | '1/1' | '9/16' | 'auto'
   altText?: string
 }
 

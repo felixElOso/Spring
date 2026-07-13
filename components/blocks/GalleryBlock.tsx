@@ -13,6 +13,21 @@ interface Props {
   block: GalleryBlockType
 }
 
+// Converts a public Vimeo / YouTube URL into an embed URL. Mirrors VideoBlock.
+function toEmbedUrl(url: string, autoplay: boolean): string {
+  if (url.includes('vimeo.com')) {
+    const id = url.split('/').pop()
+    return `https://player.vimeo.com/video/${id}?autoplay=${autoplay ? 1 : 0}&muted=1&loop=1&background=${autoplay ? 1 : 0}`
+  }
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    const id = url.includes('youtu.be')
+      ? url.split('/').pop()
+      : new URL(url).searchParams.get('v')
+    return `https://www.youtube.com/embed/${id}?autoplay=${autoplay ? 1 : 0}&mute=1&loop=1`
+  }
+  return url
+}
+
 function Lightbox({
   images,
   startIndex,
@@ -24,6 +39,7 @@ function Lightbox({
 }) {
   const [current, setCurrent] = useState(startIndex)
   const img = images[current]
+  if (!img?.image) return null
 
   return createPortal(
     <motion.div
@@ -70,6 +86,12 @@ export function GalleryBlock({ block }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const layout = (block.layout as MediaLayout) ?? 'full-width'
+  const galleryRatio = (block.aspectRatio as MediaRatio) ?? '4/3'
+
+  // Videos don't open in the lightbox, so it navigates across image items only.
+  const imageItems = (block.images ?? []).filter(
+    (it) => (it.mediaType ?? 'image') === 'image' && it.image
+  )
 
   const gridClass = {
     1: 'grid grid-cols-1',
@@ -87,30 +109,66 @@ export function GalleryBlock({ block }: Props) {
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
       <div className={gridClass}>
-        {block.images?.map((item, i) => (
-          <div
-            key={item._key || i}
-            className={block.enableLightbox ? 'cursor-pointer' : ''}
-            onClick={() => block.enableLightbox && setLightboxIndex(i)}
-          >
-            <Media
-              type="image"
-              src={urlFor(item.image).width(1600).quality(90).auto('format').fit('max').url()}
-              alt={item.altText || ''}
-              layout="thumbnail"
-              aspectRatio={(block.aspectRatio as MediaRatio) ?? '4/3'}
-              caption={item.caption}
-              sizes={`(max-width: 768px) 100vw, ${Math.round(100 / block.columns)}vw`}
-              animate={false}
-            />
-          </div>
-        ))}
+        {block.images?.map((item, i) => {
+          // ── Video item ────────────────────────────────────────────────────
+          if (item.mediaType === 'video') {
+            const isFile = (item.videoType ?? 'file') === 'file'
+            const autoplay = item.videoAutoplay ?? true
+            const src = isFile
+              ? item.videoFile?.asset?.url
+              : item.videoUrl
+                ? toEmbedUrl(item.videoUrl, autoplay)
+                : undefined
+            if (!src) return null
+
+            return (
+              <Media
+                key={item._key || i}
+                type="video"
+                src={src}
+                embed={!isFile}
+                alt={item.altText || ''}
+                layout="thumbnail"
+                aspectRatio={galleryRatio}
+                caption={item.caption}
+                autoplay={autoplay}
+                loop
+                muted
+                controls={!autoplay}
+                animate={false}
+              />
+            )
+          }
+
+          // ── Image item ────────────────────────────────────────────────────
+          if (!item.image) return null
+          const lightboxPos = imageItems.indexOf(item)
+
+          return (
+            <div
+              key={item._key || i}
+              className={block.enableLightbox ? 'cursor-pointer' : ''}
+              onClick={() => block.enableLightbox && setLightboxIndex(lightboxPos)}
+            >
+              <Media
+                type="image"
+                src={urlFor(item.image).width(1600).quality(90).auto('format').fit('max').url()}
+                alt={item.altText || ''}
+                layout="thumbnail"
+                aspectRatio={galleryRatio}
+                caption={item.caption}
+                sizes={`(max-width: 768px) 100vw, ${Math.round(100 / block.columns)}vw`}
+                animate={false}
+              />
+            </div>
+          )
+        })}
       </div>
 
       <AnimatePresence>
         {lightboxIndex !== null && (
           <Lightbox
-            images={block.images}
+            images={imageItems}
             startIndex={lightboxIndex}
             onClose={() => setLightboxIndex(null)}
           />

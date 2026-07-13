@@ -41,7 +41,7 @@ export const getProjectBySlugQuery = groq`
     contentBlocks[] {
       ...,
       _type == "imageBlock" => { ..., image { ..., asset-> } },
-      _type == "galleryBlock" => { ..., images[] { ..., image { ..., asset-> } } },
+      _type == "galleryBlock" => { ..., images[] { ..., image { ..., asset-> }, videoFile { asset-> } } },
       _type == "videoBlock" => { ..., file { asset-> } },
       _type == "animationBlock" => { ..., lottieFile { asset-> }, gifImage { ..., asset-> } },
       _type == "imageMosaicBlock" => {

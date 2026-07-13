@@ -7,16 +7,58 @@ export const galleryBlock = defineType({
   fields: [
     defineField({
       name: 'images',
-      title: 'Images',
+      title: 'Media',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
-            { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+            {
+              name: 'mediaType',
+              type: 'string',
+              title: 'Media Type',
+              options: {
+                list: [
+                  { title: 'Image', value: 'image' },
+                  { title: 'Video', value: 'video' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'image',
+            },
+            { name: 'image', type: 'image', title: 'Image', options: { hotspot: true }, hidden: ({ parent }: any) => parent?.mediaType === 'video' },
+            // ── Video (file or Vimeo/YouTube embed) ──────────────────────────
+            {
+              name: 'videoType',
+              type: 'string',
+              title: 'Video Source',
+              options: {
+                list: [
+                  { title: 'Vimeo', value: 'vimeo' },
+                  { title: 'YouTube', value: 'youtube' },
+                  { title: 'Uploaded File', value: 'file' },
+                ],
+              },
+              initialValue: 'file',
+              hidden: ({ parent }: any) => parent?.mediaType !== 'video',
+            },
+            { name: 'videoUrl', type: 'url', title: 'Video URL (Vimeo/YouTube)', hidden: ({ parent }: any) => parent?.mediaType !== 'video' || parent?.videoType === 'file' },
+            { name: 'videoFile', type: 'file', title: 'Video File', options: { accept: 'video/*' }, hidden: ({ parent }: any) => parent?.mediaType !== 'video' || (parent?.videoType && parent?.videoType !== 'file') },
+            { name: 'videoAutoplay', type: 'boolean', title: 'Autoplay (always muted)', initialValue: true, hidden: ({ parent }: any) => parent?.mediaType !== 'video' },
             { name: 'caption', type: 'string', title: 'Caption' },
             { name: 'altText', type: 'string', title: 'Alt Text' },
           ],
+          preview: {
+            select: { title: 'altText', caption: 'caption', media: 'image', mediaType: 'mediaType', videoType: 'videoType' },
+            prepare({ title, caption, media, mediaType, videoType }: any) {
+              const isVideo = mediaType === 'video'
+              return {
+                title: title || caption || (isVideo ? 'Video' : 'Image'),
+                subtitle: isVideo ? `Video${videoType ? ` (${videoType})` : ''}` : 'Image',
+                media,
+              }
+            },
+          },
         },
       ],
     }),
@@ -45,9 +87,12 @@ export const galleryBlock = defineType({
           { title: '1:1   · Square',     value: '1/1'  },
           { title: '21:9  · Cinematic',  value: '21/9' },
           { title: '9:16  · Portrait',   value: '9/16' },
+          { title: 'Original · No crop', value: 'auto' },
         ],
       },
       initialValue: '4/3',
+      description:
+        'Original shows each image or video at its native proportions — nothing is cropped or stretched, so item heights may vary. Vimeo/YouTube embeds keep a 16:9 frame (the player letterboxes inside it).',
     }),
     defineField({
       name: 'layout',

@@ -45,12 +45,34 @@ function toEmbedUrl(url: string): string {
 function StripItem({ item }: { item: MediaStripItem }) {
   // ── Video ─────────────────────────────────────────────────────────────────
   if (item.mediaType === 'video') {
-    const aspect = ASPECT_CLASS[item.videoAspect ?? '16/9'] ?? ASPECT_CLASS['16/9']
     const isFile = item.videoType === 'file'
     const fileSrc = item.videoFile?.asset?.url
     const embedSrc = item.videoUrl ? toEmbedUrl(item.videoUrl) : undefined
     const src = isFile ? fileSrc : embedSrc
     if (!src) return null
+
+    // 'Original' sizes an uploaded file by its own intrinsic ratio — same as
+    // images in the strip: full height, natural width, nothing cropped.
+    // Embeds can't report a ratio from inside an iframe, so they keep 16:9.
+    if (item.videoAspect === 'auto' && isFile) {
+      return (
+        <div className="h-full flex-shrink-0 overflow-hidden rounded-sm">
+          <video
+            src={src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-auto"
+          />
+        </div>
+      )
+    }
+
+    const aspect =
+      item.videoAspect === 'auto'
+        ? ASPECT_CLASS['16/9']
+        : ASPECT_CLASS[item.videoAspect ?? '16/9'] ?? ASPECT_CLASS['16/9']
 
     return (
       <div className={`relative h-full ${aspect} flex-shrink-0 overflow-hidden rounded-sm`}>

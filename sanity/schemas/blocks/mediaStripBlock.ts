@@ -75,7 +75,7 @@ export const mediaStripBlock = defineType({
               type: 'string',
               title: 'Video Aspect Ratio',
               description:
-                'Used to size the video within the shared height (videos have no intrinsic ratio to measure). Ignored for images.',
+                'Used to size the video within the shared height. Ignored for images. Original measures the uploaded file’s own proportions — nothing is cropped. (Vimeo/YouTube embeds keep a 16:9 frame and letterbox inside it.)',
               options: {
                 list: [
                   { title: '16:9  · Widescreen', value: '16/9' },
@@ -83,6 +83,7 @@ export const mediaStripBlock = defineType({
                   { title: '3:2   · Photo',      value: '3/2'  },
                   { title: '1:1   · Square',     value: '1/1'  },
                   { title: '9:16  · Portrait',   value: '9/16' },
+                  { title: 'Original · No crop', value: 'auto' },
                 ],
               },
               initialValue: '16/9',
