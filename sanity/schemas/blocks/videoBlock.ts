@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const videoBlock = defineType({
   name: 'videoBlock',
@@ -75,6 +76,7 @@ export const videoBlock = defineType({
       },
       initialValue: 'full-width',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 // A manually horizontally-scrollable strip of mixed-width media that all share
 // the same height. Unlike Marquee Gallery, it does not auto-scroll — the viewer
@@ -152,6 +153,7 @@ export const mediaStripBlock = defineType({
       },
       initialValue: 'none',
     }),
+    spacingField(),
   ],
   initialValue: {
     height: 'medium',

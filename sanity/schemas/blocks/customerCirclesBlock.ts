@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const customerCirclesBlock = defineType({
   name: 'customerCirclesBlock',
@@ -71,6 +72,7 @@ export const customerCirclesBlock = defineType({
       },
       initialValue: 'full-bleed',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

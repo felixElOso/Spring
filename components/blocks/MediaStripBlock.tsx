@@ -147,11 +147,13 @@ export function MediaStripBlock({ block }: Props) {
           top is padded — items sit flush with the panel's bottom edge. */}
       <div className={bgClass ? `${bgClass} rounded-3xl pt-8 md:pt-10` : undefined}>
         {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
-            Full-bleed strips get a 60px lead-in and lead-out so items never sit
-            flush against the viewport edges; other layouts already have padding. */}
+            Full-bleed strips get a lead-in / lead-out that matches the site's
+            responsive horizontal margin (section-pad), so the first and last
+            items line up with the page's content edges at every width. Other
+            layouts already have padding; a background panel supplies its own. */}
         <div
           className={`flex gap-10 overflow-x-auto scrollbar-hide ${heightClass} ${
-            bgClass ? 'px-8 md:px-10' : layout === 'full-bleed' ? 'px-[60px]' : ''
+            bgClass ? 'px-8 md:px-10' : layout === 'full-bleed' ? 'section-pad' : ''
           }`}
           style={{ WebkitOverflowScrolling: 'touch' }}
         >

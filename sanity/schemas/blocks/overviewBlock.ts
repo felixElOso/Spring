@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const overviewBlock = defineType({
   name: 'overviewBlock',
@@ -66,6 +67,7 @@ export const overviewBlock = defineType({
       },
       initialValue: 'contained',
     }),
+    spacingField(),
   ],
   preview: {
     select: { title: 'title', body: 'body' },

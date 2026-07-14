@@ -15,6 +15,14 @@ export interface SanityImage {
 
 export type BlockLayout = 'full-bleed' | 'full-width' | 'wide' | 'medium' | 'contained' | 'narrow'
 
+/** Vertical gap above a block: 'normal' (standard section rhythm) or 'tight' (40px). */
+export type BlockSpacing = 'normal' | 'tight'
+
+/** Fields shared by every content block. Merged into the ContentBlock union. */
+export interface BlockCommon {
+  spacing?: BlockSpacing
+}
+
 export interface RichTextBlock {
   _type: 'richTextBlock'
   _key: string
@@ -262,7 +270,7 @@ export interface CustomerCirclesBlock {
   layout: 'full-bleed' | 'full-width'
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | HeadingH2Block | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock | CustomerCirclesBlock
+export type ContentBlock = (RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | HeadingH2Block | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock | CustomerCirclesBlock) & BlockCommon
 
 export interface Project {
   _id: string

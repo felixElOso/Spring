@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const marqueeGalleryBlock = defineType({
   name: 'marqueeGalleryBlock',
@@ -83,6 +84,7 @@ export const marqueeGalleryBlock = defineType({
         ],
       },
     }),
+    spacingField(),
   ],
   initialValue: {
     speed: 'medium',

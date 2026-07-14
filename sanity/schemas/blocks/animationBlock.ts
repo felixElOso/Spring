@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const animationBlock = defineType({
   name: 'animationBlock',
@@ -69,6 +70,7 @@ export const animationBlock = defineType({
       },
       initialValue: 'contained',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const quoteBlock = defineType({
   name: 'quoteBlock',
@@ -32,6 +33,7 @@ export const quoteBlock = defineType({
         ],
       },
     }),
+    spacingField(),
   ],
   initialValue: {
     layout: 'contained',

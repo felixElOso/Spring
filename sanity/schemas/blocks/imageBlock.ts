@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const imageBlock = defineType({
   name: 'imageBlock',
@@ -61,6 +62,7 @@ export const imageBlock = defineType({
       description: 'Add a subtle 1px border around the image.',
       initialValue: false,
     }),
+    spacingField(),
   ],
   preview: {
     select: {

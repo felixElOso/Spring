@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const statsBlock = defineType({
   name: 'statsBlock',
@@ -86,6 +87,7 @@ export const statsBlock = defineType({
       },
       initialValue: 'contained',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

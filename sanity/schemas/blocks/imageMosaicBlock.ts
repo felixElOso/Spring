@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 // Reusable per-image object — used by both the legacy `images` array and the
 // `rows` array, so the two share identical fields and previews.
@@ -257,6 +258,7 @@ export const imageMosaicBlock = defineType({
       },
       initialValue: 'full-width',
     }),
+    spacingField(),
   ],
   initialValue: {
     mosaicStyle: 'side-by-side',

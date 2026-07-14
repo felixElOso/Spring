@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const galleryBlock = defineType({
   name: 'galleryBlock',
@@ -127,6 +128,7 @@ export const galleryBlock = defineType({
       },
       initialValue: 'none',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

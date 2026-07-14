@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { spacingField } from './shared/spacingField'
 
 export const beforeAfterBlock = defineType({
   name: 'beforeAfterBlock',
@@ -70,6 +71,7 @@ export const beforeAfterBlock = defineType({
       },
       initialValue: 'full-width',
     }),
+    spacingField(),
   ],
   preview: {
     select: {

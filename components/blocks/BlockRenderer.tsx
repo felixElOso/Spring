@@ -102,31 +102,60 @@ function renderBlock(block: ContentBlock) {
 
 // ─── Renderer ─────────────────────────────────────────────────────────────────
 
+// Whether a grouped item is marked Tight. For a half-row, the first block's
+// spacing wins.
+function isTight(item: GroupedItem): boolean {
+  const block = item.type === 'half-row' ? item.blocks[0] : item.block
+  return (block as { spacing?: string }).spacing === 'tight'
+}
+
 export function BlockRenderer({ blocks }: Props) {
   const grouped = groupBlocks(blocks)
 
   return (
-    // Consistent vertical rhythm between content blocks: 200px on desktop,
-    // scaled down on mobile. Each block's own root vertical padding is
-    // removed so this gap is the single source of truth for inter-block space.
-    <div className="flex flex-col gap-24 md:gap-[200px]">
-      {grouped.map((item) => {
+    // Vertical rhythm is driven by each item's top margin (not a container gap),
+    // so any block can opt into tight spacing via its Spacing field. The gap
+    // between two items is tight (40px) when EITHER neighbour is Tight — so a
+    // single toggle closes both sides of a block and two adjacent tight blocks
+    // share one 40px gap. The first item gets no top margin.
+    //
+    // Blocks also carry their own internal vertical padding (MEDIA_SPACING), so
+    // for a tight gap to read as a true 40px between content we zero the touching
+    // padding: data-tight-above on the lower item, data-tight-below on the upper
+    // one (see the CSS helpers in globals.css).
+    <div className="flex flex-col">
+      {grouped.map((item, i) => {
+        const tightAbove = i > 0 && (isTight(item) || isTight(grouped[i - 1]))
+        const tightBelow =
+          i < grouped.length - 1 && (isTight(item) || isTight(grouped[i + 1]))
+        const marginClass =
+          i === 0 ? '' : tightAbove ? 'mt-10' : 'mt-24 md:mt-[200px]'
+        const tightProps = {
+          ...(tightAbove ? { 'data-tight-above': '' } : {}),
+          ...(tightBelow ? { 'data-tight-below': '' } : {}),
+        }
+
         if (item.type === 'half-row') {
           const isSingle = item.blocks.length === 1
           return (
             <div
               key={item.blocks[0]._key + '-row'}
-              className={
+              {...tightProps}
+              className={`${marginClass} ${
                 isSingle
                   ? 'section-pad max-w-3xl mx-auto'
                   : 'grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 section-pad max-w-[var(--max-w-content)] mx-auto'
-              }
+              }`}
             >
               {item.blocks.map((block) => renderBlock(block))}
             </div>
           )
         }
-        return renderBlock(item.block)
+        return (
+          <div key={item.block._key} {...tightProps} className={marginClass || undefined}>
+            {renderBlock(item.block)}
+          </div>
+        )
       })}
     </div>
   )

@@ -184,6 +184,19 @@
   }
 }
 
+/* Tight-spacing helpers (used by BlockRenderer). Many content blocks add their
+   own internal vertical padding (MEDIA_SPACING: py-8 md:py-16, etc.). When two
+   blocks sit in a tight 40px group, that internal padding would stack on top of
+   the 40px margin, so we zero the padding on the touching side. These target
+   the block's own root element (the wrapper's direct child) and override the
+   responsive md: padding, leaving the renderer's 40px margin as the true gap. */
+[data-tight-below] > * {
+  padding-bottom: 0 !important;
+}
+[data-tight-above] > * {
+  padding-top: 0 !important;
+}
+
 @layer base {
   html {
     background-color: var(--background);
