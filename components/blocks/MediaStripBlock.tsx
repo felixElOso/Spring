@@ -101,7 +101,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
   // ── Image ───────────────────────────────────────────────────────────────────
   if (!item.image) return null
   return (
-    <div className="h-full flex-shrink-0 overflow-hidden rounded-sm">
+    <div className="h-full flex-shrink-0 overflow-hidden rounded-3xl">
       <Image
         src={urlFor(item.image).height(1440).quality(90).auto('format').fit('max').url()}
         alt={item.altText || ''}
