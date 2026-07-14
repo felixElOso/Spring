@@ -13,6 +13,7 @@ import { MediaStripBlock } from './MediaStripBlock'
 import { QuoteBlock } from './QuoteBlock'
 import { BeforeAfterBlock } from './BeforeAfterBlock'
 import { CustomerCirclesBlock } from './CustomerCirclesBlock'
+import { HeadingH2Block } from './HeadingH2Block'
 import type { ContentBlock } from '@/lib/sanity/types'
 
 interface Props {
@@ -23,7 +24,9 @@ interface Props {
 
 function isHalfBlock(block: ContentBlock): boolean {
   return (
-    (block._type === 'textBlock' || block._type === 'headingBlock') &&
+    (block._type === 'textBlock' ||
+      block._type === 'headingBlock' ||
+      block._type === 'headingH2Block') &&
     (block as { layout?: string }).layout === 'half'
   )
 }
@@ -78,6 +81,8 @@ function renderBlock(block: ContentBlock) {
       return <OverviewBlock key={block._key} block={block} />
     case 'headingBlock':
       return <HeadingBlock key={block._key} block={block} />
+    case 'headingH2Block':
+      return <HeadingH2Block key={block._key} block={block} />
     case 'imageMosaicBlock':
       return <ImageMosaicBlock key={block._key} block={block} />
     case 'marqueeGalleryBlock':

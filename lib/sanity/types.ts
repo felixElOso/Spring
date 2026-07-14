@@ -132,6 +132,13 @@ export interface HeadingBlock {
   layout: 'contained' | 'full-width' | 'half'
 }
 
+export interface HeadingH2Block {
+  _type: 'headingH2Block'
+  _key: string
+  text: string
+  layout: BlockLayout | 'half'
+}
+
 export interface ImageMosaicImage {
   _key: string
   mediaType?: 'image' | 'video' | 'beforeAfter'
@@ -253,7 +260,7 @@ export interface CustomerCirclesBlock {
   layout: 'full-bleed' | 'full-width'
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock | CustomerCirclesBlock
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | HeadingH2Block | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock | CustomerCirclesBlock
 
 export interface Project {
   _id: string

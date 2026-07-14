@@ -15,6 +15,7 @@ import { mediaStripBlock } from './blocks/mediaStripBlock'
 import { quoteBlock } from './blocks/quoteBlock'
 import { beforeAfterBlock } from './blocks/beforeAfterBlock'
 import { customerCirclesBlock } from './blocks/customerCirclesBlock'
+import { headingH2Block } from './blocks/headingH2Block'
 
 export const schemaTypes = [
   project,
@@ -34,4 +35,5 @@ export const schemaTypes = [
   quoteBlock,
   beforeAfterBlock,
   customerCirclesBlock,
+  headingH2Block,
 ]
