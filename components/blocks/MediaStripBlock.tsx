@@ -143,8 +143,9 @@ export function MediaStripBlock({ block }: Props) {
     >
       {/* Optional design-system background: a rounded, padded panel behind the
           strip. When set, the panel's padding provides the horizontal inset, so
-          the full-bleed 60px lead-in is dropped to avoid doubling up. */}
-      <div className={bgClass ? `${bgClass} rounded-3xl py-8 md:py-10` : undefined}>
+          the full-bleed 60px lead-in is dropped to avoid doubling up. Only the
+          top is padded — items sit flush with the panel's bottom edge. */}
+      <div className={bgClass ? `${bgClass} rounded-3xl pt-8 md:pt-10` : undefined}>
         {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
             Full-bleed strips get a 60px lead-in and lead-out so items never sit
             flush against the viewport edges; other layouts already have padding. */}
