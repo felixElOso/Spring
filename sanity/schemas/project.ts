@@ -138,6 +138,7 @@ export const project = defineType({
         { type: 'mediaStripBlock' },
         { type: 'quoteBlock' },
         { type: 'beforeAfterBlock' },
+        { type: 'customerCirclesBlock' },
       ],
     }),
     defineField({

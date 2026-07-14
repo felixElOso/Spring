@@ -238,7 +238,22 @@ export interface BeforeAfterBlock {
   layout: BlockLayout
 }
 
-export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock
+export interface CustomerCircle {
+  _key: string
+  image: SanityImage
+  name: string
+  role?: string
+  size?: 'lg' | 'md' | 'sm'
+}
+
+export interface CustomerCirclesBlock {
+  _type: 'customerCirclesBlock'
+  _key: string
+  customers: CustomerCircle[]
+  layout: 'full-bleed' | 'full-width'
+}
+
+export type ContentBlock = RichTextBlock | ImageBlock | GalleryBlock | VideoBlock | AnimationBlock | TextBlock | StatsBlock | OverviewBlock | HeadingBlock | ImageMosaicBlock | MarqueeGalleryBlock | MediaStripBlock | QuoteBlock | BeforeAfterBlock | CustomerCirclesBlock
 
 export interface Project {
   _id: string

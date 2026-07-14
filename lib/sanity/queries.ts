@@ -56,6 +56,7 @@ export const getProjectBySlugQuery = groq`
       _type == "marqueeGalleryBlock" => { ..., rows[] { ..., images[] { ..., image { ..., asset-> }, companionImage { ..., asset-> } } } },
       _type == "mediaStripBlock" => { ..., items[] { ..., image { ..., asset-> }, videoFile { asset-> } } },
       _type == "beforeAfterBlock" => { ..., beforeImage { ..., asset-> }, afterImage { ..., asset-> } },
+      _type == "customerCirclesBlock" => { ..., customers[] { ..., image { ..., asset-> } } },
     },
     seo {
       title,

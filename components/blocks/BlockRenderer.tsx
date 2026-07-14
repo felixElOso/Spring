@@ -12,6 +12,7 @@ import { MarqueeGalleryBlock } from './MarqueeGalleryBlock'
 import { MediaStripBlock } from './MediaStripBlock'
 import { QuoteBlock } from './QuoteBlock'
 import { BeforeAfterBlock } from './BeforeAfterBlock'
+import { CustomerCirclesBlock } from './CustomerCirclesBlock'
 import type { ContentBlock } from '@/lib/sanity/types'
 
 interface Props {
@@ -87,6 +88,8 @@ function renderBlock(block: ContentBlock) {
       return <QuoteBlock key={block._key} block={block} />
     case 'beforeAfterBlock':
       return <BeforeAfterBlock key={block._key} block={block} />
+    case 'customerCirclesBlock':
+      return <CustomerCirclesBlock key={block._key} block={block} />
     default:
       return null
   }
