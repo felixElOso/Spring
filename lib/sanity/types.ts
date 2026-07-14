@@ -54,6 +54,7 @@ export interface GalleryBlock {
   enableLightbox: boolean
   aspectRatio?: string
   layout: BlockLayout
+  backgroundColor?: 'none' | 'cream' | 'ink' | 'coral' | 'white'
 }
 
 export interface VideoBlock {
@@ -223,6 +224,7 @@ export interface MediaStripBlock {
   items: MediaStripItem[]
   height: 'small' | 'medium' | 'large'
   layout: BlockLayout
+  backgroundColor?: 'none' | 'cream' | 'ink' | 'coral' | 'white'
 }
 
 export interface QuoteBlock {

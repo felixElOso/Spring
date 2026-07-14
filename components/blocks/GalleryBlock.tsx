@@ -82,11 +82,22 @@ function Lightbox({
   )
 }
 
+// Design-system background colors for the optional panel behind the grid.
+const BG_CLASS: Record<string, string> = {
+  cream: 'bg-cream',
+  ink: 'bg-ink',
+  coral: 'bg-coral',
+  white: 'bg-white',
+}
+
 export function GalleryBlock({ block }: Props) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   const layout = (block.layout as MediaLayout) ?? 'full-width'
   const galleryRatio = (block.aspectRatio as MediaRatio) ?? '4/3'
+  const bgClass = block.backgroundColor && block.backgroundColor !== 'none'
+    ? BG_CLASS[block.backgroundColor]
+    : undefined
 
   // Videos don't open in the lightbox, so it navigates across image items only.
   const imageItems = (block.images ?? []).filter(
@@ -108,7 +119,10 @@ export function GalleryBlock({ block }: Props) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
-      <div className={gridClass}>
+      {/* Optional design-system background: a rounded, padded panel behind the
+          grid so the color frames the images with a margin. */}
+      <div className={bgClass ? `${bgClass} rounded-3xl p-6 md:p-10` : undefined}>
+        <div className={gridClass}>
         {block.images?.map((item, i) => {
           // ── Video item ────────────────────────────────────────────────────
           if (item.mediaType === 'video') {
@@ -163,6 +177,7 @@ export function GalleryBlock({ block }: Props) {
             </div>
           )
         })}
+        </div>
       </div>
 
       <AnimatePresence>

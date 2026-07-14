@@ -110,6 +110,23 @@ export const galleryBlock = defineType({
       },
       initialValue: 'full-width',
     }),
+    defineField({
+      name: 'backgroundColor',
+      title: 'Background Color',
+      type: 'string',
+      description:
+        'Fills a padded panel behind the gallery. Uses design-system colors only.',
+      options: {
+        list: [
+          { title: 'None',  value: 'none'  },
+          { title: 'Cream', value: 'cream' },
+          { title: 'Ink',   value: 'ink'   },
+          { title: 'Coral', value: 'coral' },
+          { title: 'White', value: 'white' },
+        ],
+      },
+      initialValue: 'none',
+    }),
   ],
   preview: {
     select: {

@@ -115,10 +115,21 @@ function StripItem({ item }: { item: MediaStripItem }) {
   )
 }
 
+// Design-system background colors for the optional panel behind the strip.
+const BG_CLASS: Record<string, string> = {
+  cream: 'bg-cream',
+  ink: 'bg-ink',
+  coral: 'bg-coral',
+  white: 'bg-white',
+}
+
 export function MediaStripBlock({ block }: Props) {
   const layout = (block.layout as MediaLayout) ?? 'full-bleed'
   const heightClass = HEIGHT_MAP[block.height] ?? HEIGHT_MAP.medium
   const items = block.items ?? []
+  const bgClass = block.backgroundColor && block.backgroundColor !== 'none'
+    ? BG_CLASS[block.backgroundColor]
+    : undefined
 
   if (items.length < 2) return null
 
@@ -130,16 +141,23 @@ export function MediaStripBlock({ block }: Props) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`${MEDIA_OUTER[layout]} ${MEDIA_SPACING[layout]}`}
     >
-      {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
-          Full-bleed strips get a 60px lead-in and lead-out so items never sit
-          flush against the viewport edges; other layouts already have padding. */}
-      <div
-        className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${layout === 'full-bleed' ? 'px-[60px]' : ''}`}
-        style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
-      >
-        {items.map((item, i) => (
-          <StripItem key={item._key || i} item={item} />
-        ))}
+      {/* Optional design-system background: a rounded, padded panel behind the
+          strip. When set, the panel's padding provides the horizontal inset, so
+          the full-bleed 60px lead-in is dropped to avoid doubling up. */}
+      <div className={bgClass ? `${bgClass} rounded-3xl py-8 md:py-10` : undefined}>
+        {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
+            Full-bleed strips get a 60px lead-in and lead-out so items never sit
+            flush against the viewport edges; other layouts already have padding. */}
+        <div
+          className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${
+            bgClass ? 'px-8 md:px-10' : layout === 'full-bleed' ? 'px-[60px]' : ''
+          }`}
+          style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
+        >
+          {items.map((item, i) => (
+            <StripItem key={item._key || i} item={item} />
+          ))}
+        </div>
       </div>
     </motion.div>
   )
