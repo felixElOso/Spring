@@ -149,10 +149,10 @@ export function MediaStripBlock({ block }: Props) {
             Full-bleed strips get a 60px lead-in and lead-out so items never sit
             flush against the viewport edges; other layouts already have padding. */}
         <div
-          className={`flex gap-10 overflow-x-auto pb-4 ${heightClass} ${
+          className={`flex gap-10 overflow-x-auto scrollbar-hide ${heightClass} ${
             bgClass ? 'px-8 md:px-10' : layout === 'full-bleed' ? 'px-[60px]' : ''
           }`}
-          style={{ scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch' }}
+          style={{ WebkitOverflowScrolling: 'touch' }}
         >
           {items.map((item, i) => (
             <StripItem key={item._key || i} item={item} />
