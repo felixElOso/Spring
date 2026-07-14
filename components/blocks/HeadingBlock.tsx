@@ -20,7 +20,7 @@ export function HeadingBlock({ block }: Props) {
       className={isHalf ? '' : `section-pad ${isContained ? 'max-w-[var(--max-w-content)] mx-auto' : ''}`}
     >
       <div className={isContained ? 'max-w-3xl mx-auto' : ''}>
-        <h4 className="text-2xl font-medium text-foreground">
+        <h4 className="text-center text-2xl font-medium text-muted-foreground">
           {block.text}
         </h4>
       </div>

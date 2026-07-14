@@ -23,7 +23,7 @@ export function HeadingH2Block({ block }: Props) {
         {/* Design-system H2: text-4xl / medium / tight tracking, scaling up on
             larger screens. `whitespace-pre-line` renders the editor's Enter
             key presses as line breaks. */}
-        <h2 className="whitespace-pre-line text-4xl md:text-5xl font-medium tracking-tight text-foreground">
+        <h2 className="whitespace-pre-line text-center text-4xl md:text-5xl font-medium tracking-tight text-muted-foreground">
           {block.text}
         </h2>
       </div>
