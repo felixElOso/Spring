@@ -73,7 +73,7 @@
   --color-pepper-110: #2B3135;
   --color-pepper-120: #21262A;
   --color-pepper-130: #181C1F;
-  --font-sans: var(--font-avenir), 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: var(--font-tally), 'Helvetica Neue', Arial, sans-serif;
   --max-w-content: 1680px;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);

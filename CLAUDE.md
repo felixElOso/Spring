@@ -21,7 +21,7 @@ Always use the design token names, never raw hex values in components.
 | `white` | `#FFFFFF` | Cards, overlays |
 
 ### Typography
-- **Font family**: `Avenir Next` (loaded via next/font or @font-face)
+- **Font family**: `Tally` (loaded via next/font local, `--font-tally`)
 - **Weights in use**: 400 (Regular), 500 (Medium) only — do not use other weights
 - **Scale**: Use Tailwind's type scale. Headings are large and confident. Body is comfortable, not tight.
 - **Style**: No italic. No decorative fonts. Typography does the heavy lifting.

@@ -422,7 +422,7 @@ function DarkModeSection() {
 
 function TypographySection() {
   return (
-    <Section id="typography" title="Typography" meta="Avenir Next · 400 · 500">
+    <Section id="typography" title="Typography" meta="Tally · 400 · 500">
       <div className="divide-y divide-border">
         {typeScale.map(item => (
           <div key={item.label} className="grid grid-cols-[160px_1fr] gap-8 items-baseline py-8">

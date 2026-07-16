@@ -3,20 +3,20 @@ import localFont from 'next/font/local'
 import './globals.css'
 import { ThemeProvider } from '@/lib/theme'
 
-const avenir = localFont({
+const tally = localFont({
   src: [
     {
-      path: '../public/fonts/AvenirNextforINTUIT-Regular.woff2',
+      path: '../public/fonts/Tally-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/AvenirNextforINTUIT-Medium.woff2',
+      path: '../public/fonts/Tally-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
   ],
-  variable: '--font-avenir',
+  variable: '--font-tally',
   display: 'swap',
   fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
 })
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={avenir.variable} suppressHydrationWarning>
+    <html lang="en" className={tally.variable} suppressHydrationWarning>
       <body className="font-sans bg-background text-foreground antialiased" suppressHydrationWarning>
         <ThemeProvider>
           {children}
