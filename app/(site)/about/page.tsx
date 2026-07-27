@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { client, urlFor } from '@/lib/sanity/client'
 import { getAllTeamMembersQuery } from '@/lib/sanity/queries'
 import type { TeamMember } from '@/lib/sanity/types'
+import { Media } from '@/components/ui/media'
 
 export const metadata: Metadata = {
   title: 'About — Studio',
@@ -20,18 +21,24 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="pt-16">
+    <div>
+      {/* Hero image — flush to the top, sits under the transparent nav */}
+      <Media
+        type="image"
+        src="/about-hero.jpg"
+        alt="Spring studio"
+        layout="full-bleed"
+        aspectRatio="21/9"
+        priority
+        animate={false}
+      />
+
       {/* Studio intro */}
       <section className="max-w-content mx-auto section-pad pt-24 pb-24">
-        <h1 className="text-[clamp(3rem,8vw,7rem)] font-medium leading-none tracking-tight text-foreground mb-12">
-          About
+        <h1 className="text-balance text-[clamp(2.5rem,7vw,6rem)] font-medium leading-[0.95] tracking-[-0.03em] text-foreground">
+          We are the in-house creative agency for TurboTax, shaping the brand
+          experience across marketing, retail, and product.
         </h1>
-        <div className="max-w-2xl">
-          <p className="text-xl md:text-2xl text-foreground/80 leading-7">
-            We are a design studio focused on brand identity, digital products, and motion.
-            We work with companies that want to make their mark.
-          </p>
-        </div>
       </section>
 
       {/* Team */}
