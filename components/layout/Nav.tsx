@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -46,7 +45,6 @@ export function Nav() {
             <Link href="/about" className="text-sm transition-colors duration-300 text-foreground/70 hover:text-coral">
               About
             </Link>
-            <ThemeToggle />
           </div>
 
           {/* Mobile hamburger */}
@@ -78,7 +76,6 @@ export function Nav() {
             <Link href="/about" onClick={() => setMenuOpen(false)} className="text-2xl font-medium text-foreground hover:text-coral transition-colors">
               About
             </Link>
-            <ThemeToggle className="mt-auto mb-8" />
           </motion.div>
         )}
       </AnimatePresence>

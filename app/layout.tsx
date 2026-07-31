@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import { ThemeProvider } from '@/lib/theme'
 
 const tally = localFont({
   src: [
@@ -35,11 +34,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={tally.variable} suppressHydrationWarning>
-      <body className="font-sans bg-background text-foreground antialiased" suppressHydrationWarning>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+    <html lang="en" className={`dark ${tally.variable}`}>
+      <body className="font-sans bg-background text-foreground antialiased">
+        {children}
       </body>
     </html>
   )

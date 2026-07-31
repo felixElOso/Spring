@@ -3,9 +3,5 @@ export default function UploadLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div className="dark">
-      <main>{children}</main>
-    </div>
-  )
+  return <main>{children}</main>
 }

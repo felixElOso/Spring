@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { useTheme } from '@/lib/theme'
 import { Media } from '@/components/ui/media'
 import type { MediaType, MediaLayout, MediaRatio } from '@/components/ui/media'
 
@@ -119,7 +117,6 @@ const BTN_SIZES:    BtnSize[]    = ['xs', 'sm', 'default', 'lg', 'icon']
 const NAV_SECTIONS = [
   { id: 'colors',     label: 'Colors' },
   { id: 'ramps',      label: 'Color Ramps' },
-  { id: 'dark-mode',  label: 'Dark Mode' },
   { id: 'typography', label: 'Typography' },
   { id: 'button',     label: 'Button' },
   { id: 'media',      label: 'Media' },
@@ -162,7 +159,6 @@ export default function DesignSystemPage() {
           <div className="flex-1 min-w-0">
             <ColorsSection />
             <ColorRampsSection />
-            <DarkModeSection />
             <TypographySection />
             <ButtonSection />
             <MediaSection />
@@ -291,129 +287,6 @@ function ColorRampsSection() {
           </Subsection>
         ))}
       </div>
-    </Section>
-  )
-}
-
-// ─── Dark Mode ─────────────────────────────────────────────────────────────────
-
-const darkTokens = [
-  { token: '--background',   light: '#F4F4EF', dark: '#181C1F', note: 'cream → pepper-130' },
-  { token: '--foreground',   light: '#21262A', dark: '#F4F4EF', note: 'ink → cream' },
-  { token: '--card',         light: '#FFFFFF', dark: '#21262A', note: 'white → pepper-120' },
-  { token: '--primary',      light: '#21262A', dark: '#F4F4EF', note: 'ink → cream (inverted)' },
-  { token: '--secondary',    light: '#EAEAE5', dark: '#2B3135', note: 'muted warm → pepper-110' },
-  { token: '--muted',        light: '#EAEAE5', dark: '#2B3135', note: 'muted warm → pepper-110' },
-  { token: '--muted-foreground', light: '#6B7177', dark: '#727E85', note: '→ pepper-70' },
-  { token: '--accent',       light: '#FF808C', dark: '#FF808C', note: 'coral — unchanged' },
-  { token: '--border',       light: 'ink / 12%', dark: 'cream / 10%', note: 'opacity flip' },
-]
-
-function DarkModeSection() {
-  const { theme, setTheme } = useTheme()
-
-  return (
-    <Section id="dark-mode" title="Dark Mode" meta="lib/theme.tsx · .dark class">
-
-      {/* Toggle */}
-      <div className="flex items-center gap-4 mb-12 p-6 rounded-sm border border-border bg-card">
-        <ThemeToggle />
-        <div>
-          <p className="text-sm font-medium text-foreground">
-            Currently <span className="text-coral font-mono">{theme}</span>
-          </p>
-          <p className="text-xs text-foreground/40 mt-0.5">
-            Respects system preference on first visit · persisted to localStorage
-          </p>
-        </div>
-        <div className="ml-auto flex gap-2">
-          <button
-            onClick={() => setTheme('light')}
-            className={`px-3 py-1.5 text-xs rounded-full border transition-colors duration-150 ${
-              theme === 'light'
-                ? 'bg-foreground text-background border-foreground'
-                : 'border-border text-foreground/50 hover:text-foreground'
-            }`}
-          >
-            Light
-          </button>
-          <button
-            onClick={() => setTheme('dark')}
-            className={`px-3 py-1.5 text-xs rounded-full border transition-colors duration-150 ${
-              theme === 'dark'
-                ? 'bg-foreground text-background border-foreground'
-                : 'border-border text-foreground/50 hover:text-foreground'
-            }`}
-          >
-            Dark
-          </button>
-        </div>
-      </div>
-
-      {/* Token mapping table */}
-      <Subsection label="Semantic Token Mapping">
-        <div className="divide-y divide-border">
-          {darkTokens.map(t => (
-            <div key={t.token} className="grid grid-cols-[1fr_auto_auto] gap-6 items-center py-4">
-              <div>
-                <p className="text-xs font-mono text-foreground">{t.token}</p>
-                <p className="text-[10px] text-foreground/40 mt-0.5">{t.note}</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-6 rounded-sm border border-border shrink-0"
-                  style={{ backgroundColor: t.light.startsWith('#') ? t.light : undefined }}
-                  title={`Light: ${t.light}`}
-                />
-                <span className="text-[10px] font-mono text-foreground/50 w-20 text-right">{t.light}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-6 rounded-sm border border-border shrink-0"
-                  style={{ backgroundColor: t.dark.startsWith('#') ? t.dark : undefined, background: !t.dark.startsWith('#') ? `repeating-linear-gradient(45deg, var(--color-pepper-110) 0px, var(--color-pepper-110) 4px, var(--color-pepper-120) 4px, var(--color-pepper-120) 8px)` : undefined }}
-                  title={`Dark: ${t.dark}`}
-                />
-                <span className="text-[10px] font-mono text-foreground/50 w-20 text-right">{t.dark}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Subsection>
-
-      {/* Side-by-side preview */}
-      <Subsection label="Side by Side">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Light card */}
-          <div className="rounded-sm overflow-hidden border border-border">
-            <div className="px-4 py-2 bg-muted border-b border-border">
-              <p className="text-xs uppercase tracking-widest text-foreground/40">Light</p>
-            </div>
-            <div className="p-6" style={{ backgroundColor: 'var(--color-tofu-100)' }}>
-              <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'var(--color-watermelon-50)' }}>Studio</p>
-              <p className="text-2xl font-medium mb-2" style={{ color: 'var(--color-pepper-120)' }}>Design that moves</p>
-              <p className="text-sm mb-4" style={{ color: 'color-mix(in srgb, var(--color-pepper-120) 60%, transparent)' }}>We craft experiences that connect brands with people.</p>
-              <div className="inline-flex px-4 py-2 rounded-full text-xs font-medium" style={{ backgroundColor: 'var(--color-pepper-120)', color: 'var(--color-tofu-100)' }}>
-                View Work
-              </div>
-            </div>
-          </div>
-          {/* Dark card */}
-          <div className="rounded-sm overflow-hidden border border-border">
-            <div className="px-4 py-2 bg-muted border-b border-border">
-              <p className="text-xs uppercase tracking-widest text-foreground/40">Dark</p>
-            </div>
-            <div className="p-6" style={{ backgroundColor: 'var(--color-pepper-130)' }}>
-              <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'var(--color-watermelon-50)' }}>Studio</p>
-              <p className="text-2xl font-medium mb-2" style={{ color: 'var(--color-tofu-100)' }}>Design that moves</p>
-              <p className="text-sm mb-4" style={{ color: 'color-mix(in srgb, var(--color-tofu-100) 60%, transparent)' }}>We craft experiences that connect brands with people.</p>
-              <div className="inline-flex px-4 py-2 rounded-full text-xs font-medium" style={{ backgroundColor: 'var(--color-tofu-100)', color: 'var(--color-pepper-120)' }}>
-                View Work
-              </div>
-            </div>
-          </div>
-        </div>
-      </Subsection>
-
     </Section>
   )
 }
