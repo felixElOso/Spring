@@ -1,5 +1,6 @@
 import { project } from './project'
 import { teamMember } from './teamMember'
+import { aboutPage } from './aboutPage'
 import { richTextBlock } from './blocks/richTextBlock'
 import { imageBlock } from './blocks/imageBlock'
 import { galleryBlock } from './blocks/galleryBlock'
@@ -20,6 +21,7 @@ import { headingH2Block } from './blocks/headingH2Block'
 export const schemaTypes = [
   project,
   teamMember,
+  aboutPage,
   richTextBlock,
   imageBlock,
   galleryBlock,

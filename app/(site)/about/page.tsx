@@ -1,8 +1,7 @@
-import Image from 'next/image'
 import type { Metadata } from 'next'
-import { client, urlFor } from '@/lib/sanity/client'
-import { getAllTeamMembersQuery } from '@/lib/sanity/queries'
-import type { TeamMember } from '@/lib/sanity/types'
+import { client } from '@/lib/sanity/client'
+import { getAllTeamMembersQuery, getAboutPageQuery } from '@/lib/sanity/queries'
+import type { TeamMember, AboutPage as AboutPageData } from '@/lib/sanity/types'
 import { Media } from '@/components/ui/media'
 
 export const metadata: Metadata = {
@@ -12,12 +11,31 @@ export const metadata: Metadata = {
 
 export const revalidate = 10
 
+function StatementText({ statement, highlight }: { statement: string; highlight?: string }) {
+  if (!highlight) return <>{statement}</>
+  const index = statement.indexOf(highlight)
+  if (index === -1) return <>{statement}</>
+
+  return (
+    <>
+      {statement.slice(0, index)}
+      <span className="text-coral">{highlight}</span>
+      {statement.slice(index + highlight.length)}
+    </>
+  )
+}
+
 export default async function AboutPage() {
   let team: TeamMember[] = []
+  let about: AboutPageData | null = null
   try {
-    team = await client.fetch(getAllTeamMembersQuery)
+    ;[team, about] = await Promise.all([
+      client.fetch(getAllTeamMembersQuery),
+      client.fetch(getAboutPageQuery),
+    ])
   } catch {
     team = []
+    about = null
   }
 
   return (
@@ -33,47 +51,78 @@ export default async function AboutPage() {
         animate={false}
       />
 
-      {/* Studio intro */}
-      <section className="max-w-content mx-auto section-pad pt-24 pb-24">
-        <h1 className="text-balance text-[clamp(2.5rem,7vw,6rem)] font-medium leading-[0.95] tracking-[-0.03em] text-foreground">
-          We are the in-house creative agency for TurboTax, shaping the brand
-          experience across marketing, retail, and product.
-        </h1>
-      </section>
+      {/* Statement — `whitespace-pre-line` renders the editor's Enter key
+          presses as fixed line breaks, so the wrap stays put at every size
+          instead of reflowing. */}
+      {about?.statement && (
+        <section className="section-pad pt-24 pb-24">
+          <h1 className="whitespace-pre-line text-[clamp(2.25rem,6.4vw,5.25rem)] font-medium leading-[0.95] tracking-[-0.03em] text-foreground">
+            <StatementText statement={about.statement} highlight={about.statementHighlight} />
+          </h1>
+        </section>
+      )}
 
-      {/* Team */}
+      {/* Who we are */}
       {team.length > 0 && (
-        <section className="max-w-content mx-auto section-pad pb-32">
-          <p className="text-xs uppercase tracking-widest text-foreground/40 mb-16">Team</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
-            {team.map((member) => {
-              const photoUrl = member.photo
-                ? urlFor(member.photo).width(1200).height(1200).quality(90).auto('format').fit('crop').url()
-                : null
-
-              return (
-                <div key={member._id}>
-                  {photoUrl ? (
-                    <div className="relative overflow-hidden bg-muted mb-5" style={{ aspectRatio: '1/1' }}>
-                      <Image
-                        src={photoUrl}
-                        alt={member.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        quality={90}
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-muted mb-5" style={{ aspectRatio: '1/1' }} />
-                  )}
-                  <p className="font-medium text-foreground">{member.name}</p>
+        <section className="section-pad pb-24">
+          <div className="border-t border-border pt-24">
+            <h2 className="text-[clamp(1.75rem,3.5vw,3rem)] font-medium tracking-[-0.03em] text-foreground mb-12">
+              Who we are
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+              {team.map((member) => (
+                <div key={member._id} className="flex flex-col gap-2">
+                  <p className="text-2xl md:text-3xl font-normal leading-none tracking-[-0.03em] text-foreground">
+                    {member.name}
+                  </p>
                   {member.role && (
-                    <p className="text-sm text-foreground/50 mt-1">{member.role}</p>
+                    <p className="text-lg md:text-xl leading-none tracking-[-0.03em] text-foreground/50">
+                      {member.role}
+                    </p>
                   )}
                 </div>
-              )
-            })}
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* What we do */}
+      {about?.services && about.services.length > 0 && (
+        <section className="section-pad pb-24">
+          <div className="border-t border-border pt-24">
+            <h2 className="text-[clamp(1.75rem,3.5vw,3rem)] font-medium tracking-[-0.03em] text-foreground mb-12">
+              What we do
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
+              {about.services.map((service) => (
+                <p key={service} className="text-2xl md:text-3xl tracking-[-0.02em] text-foreground">
+                  {service}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Contact us */}
+      {about?.contactLinks && about.contactLinks.length > 0 && (
+        <section className="section-pad pb-32">
+          <div className="border-t border-border pt-24">
+            <h2 className="text-[clamp(1.75rem,3.5vw,3rem)] font-medium tracking-[-0.03em] text-foreground mb-12">
+              Contact us
+            </h2>
+            <div className="flex flex-col gap-5">
+              {about.contactLinks.map((link) => (
+                <a
+                  key={link._key}
+                  href={link.href}
+                  className="text-2xl md:text-3xl tracking-[-0.02em] text-foreground hover:text-coral transition-colors duration-200 w-fit"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
           </div>
         </section>
       )}

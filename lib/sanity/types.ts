@@ -308,3 +308,17 @@ export interface TeamMember {
   bio?: string
   photo?: SanityImage
 }
+
+export interface ContactLink {
+  _key: string
+  label: string
+  href: string
+}
+
+export interface AboutPage {
+  _id: string
+  statement: string
+  statementHighlight?: string
+  services?: string[]
+  contactLinks?: ContactLink[]
+}

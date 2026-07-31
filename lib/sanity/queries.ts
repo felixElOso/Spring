@@ -75,3 +75,13 @@ export const getAllTeamMembersQuery = groq`
     photo,
   }
 `
+
+export const getAboutPageQuery = groq`
+  *[_type == "aboutPage"][0] {
+    _id,
+    statement,
+    statementHighlight,
+    services,
+    contactLinks,
+  }
+`
