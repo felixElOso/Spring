@@ -79,12 +79,21 @@ export const project = defineType({
       },
       initialValue: 'image',
     }),
+    defineField({
+      name: 'thumbnailVideoFile',
+      title: 'Thumbnail Video File',
+      type: 'file',
+      description:
+        'Upload a video played on the work-grid thumbnail only (separate from the hero video). If empty, the thumbnail falls back to the Cover Video File / URL. Requires Thumbnail Media set to Video.',
+      options: { accept: 'video/*' },
+      hidden: ({ parent }) => parent?.thumbnailMedia !== 'video',
+    }),
     defineField({ name: 'coverVideo', title: 'Cover Video URL (hover)', type: 'url' }),
     defineField({
       name: 'coverVideoFile',
       title: 'Cover Video File',
       type: 'file',
-      description: 'Upload a video file for the project thumbnail (plays on hover). Takes priority over Cover Video URL.',
+      description: 'Upload a video file for the project hero and (as a fallback) the thumbnail. Takes priority over Cover Video URL.',
       options: { accept: 'video/*' },
     }),
     defineField({

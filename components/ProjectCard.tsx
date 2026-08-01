@@ -13,8 +13,13 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, featured }: ProjectCardProps) {
-  // Resolve the video source: uploaded file takes priority over URL
-  const videoSrc = project.coverVideoFile?.asset?.url ?? project.coverVideo
+  // Resolve the thumbnail video source. A dedicated thumbnail video file wins;
+  // otherwise fall back to the cover video (uploaded file, then URL) so projects
+  // without a separate thumbnail clip keep working.
+  const videoSrc =
+    project.thumbnailVideoFile?.asset?.url ??
+    project.coverVideoFile?.asset?.url ??
+    project.coverVideo
 
   // Use video thumbnail only when explicitly chosen in Sanity
   const useVideo = project.thumbnailMedia === 'video' && !!videoSrc

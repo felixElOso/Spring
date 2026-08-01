@@ -13,6 +13,7 @@ export const getAllProjectsQuery = groq`
     coverImage,
     coverVideo,
     coverVideoFile { asset-> { url } },
+    thumbnailVideoFile { asset-> { url } },
     coverAnimation {
       animationType,
       lottieFile { asset-> { url } },

@@ -286,6 +286,7 @@ export interface Project {
   coverImage?: SanityImage
   coverVideo?: string
   coverVideoFile?: { asset: { url: string } }
+  thumbnailVideoFile?: { asset: { url: string } }
   coverAnimation?: {
     animationType?: 'lottie' | 'gif'
     lottieFile?: { asset: { url: string } }
