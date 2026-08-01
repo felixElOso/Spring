@@ -20,6 +20,24 @@ const tally = localFont({
   fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
 })
 
+const tallyDisplay = localFont({
+  src: [
+    {
+      path: '../public/fonts/TallyDisplay-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/TallyDisplay-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-tally-display',
+  display: 'swap',
+  fallback: ['Helvetica Neue', 'Arial', 'sans-serif'],
+})
+
 export const metadata: Metadata = {
   title: {
     template: '%s — Studio',
@@ -34,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`dark ${tally.variable}`}>
+    <html lang="en" className={`dark ${tally.variable} ${tallyDisplay.variable}`}>
       <body className="font-sans bg-background text-foreground antialiased">
         {children}
       </body>

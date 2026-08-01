@@ -33,16 +33,16 @@ export function Nav() {
         } ${hidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'}`}
       >
         <div className="max-w-content mx-auto section-pad flex items-center justify-between h-20 lg:h-[103px]">
-          <Link href="/" className="font-medium text-sm tracking-widest uppercase transition-colors duration-300 text-foreground">
+          <Link href="/" className="font-[family-name:var(--font-tally-display)] font-medium text-base tracking-widest uppercase transition-colors duration-300 text-foreground">
             Spring
           </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-10">
-            <Link href="/" className="text-sm transition-colors duration-300 text-foreground/70 hover:text-coral">
+            <Link href="/" className="font-[family-name:var(--font-tally-display)] text-base transition-colors duration-300 text-foreground/70 hover:text-coral">
               Work
             </Link>
-            <Link href="/about" className="text-sm transition-colors duration-300 text-foreground/70 hover:text-coral">
+            <Link href="/about" className="font-[family-name:var(--font-tally-display)] text-base transition-colors duration-300 text-foreground/70 hover:text-coral">
               About
             </Link>
           </div>
@@ -70,10 +70,10 @@ export function Nav() {
             transition={{ type: 'tween', duration: 0.3 }}
             className="fixed inset-y-0 right-0 z-40 w-64 bg-background border-l border-border flex flex-col pt-20 px-8 gap-8 md:hidden"
           >
-            <Link href="/" onClick={() => setMenuOpen(false)} className="text-2xl font-medium text-foreground hover:text-coral transition-colors">
+            <Link href="/" onClick={() => setMenuOpen(false)} className="font-[family-name:var(--font-tally-display)] text-2xl font-medium text-foreground hover:text-coral transition-colors">
               Work
             </Link>
-            <Link href="/about" onClick={() => setMenuOpen(false)} className="text-2xl font-medium text-foreground hover:text-coral transition-colors">
+            <Link href="/about" onClick={() => setMenuOpen(false)} className="font-[family-name:var(--font-tally-display)] text-2xl font-medium text-foreground hover:text-coral transition-colors">
               About
             </Link>
           </motion.div>

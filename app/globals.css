@@ -74,6 +74,7 @@
   --color-pepper-120: #21262A;
   --color-pepper-130: #181C1F;
   --font-sans: var(--font-tally), 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-tally-display), var(--font-tally), 'Helvetica Neue', Arial, sans-serif;
   --max-w-content: 1680px;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -223,6 +224,14 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* TallyDisplay is the display face for all headings; body copy stays Tally.
+     ss04 swaps the default double-story "g" for the single-story "g.school"
+     alternate. It affects only the g family (g ğ ĝ ģ ġ) — no other glyphs. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-feature-settings: "ss04" 1;
   }
 }
 
