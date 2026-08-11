@@ -1,7 +1,7 @@
 import { groq } from 'next-sanity'
 
 export const getAllProjectsQuery = groq`
-  *[_type == "project"] | order(featured desc, year desc) {
+  *[_type == "project"] | order(coalesce(orderRank, "~") asc, featured desc, year desc) {
     _id,
     title,
     slug,

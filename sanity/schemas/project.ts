@@ -1,10 +1,13 @@
 import { defineType, defineField } from 'sanity'
+import { orderRankField, orderRankOrdering } from '@sanity/orderable-document-list'
 
 export const project = defineType({
   name: 'project',
   title: 'Project',
   type: 'document',
   fields: [
+    // Hidden rank used by the drag-and-drop "Projects" list in the Studio sidebar
+    orderRankField({ type: 'project' }),
     defineField({
       name: 'title',
       title: 'Title',
@@ -179,6 +182,7 @@ export const project = defineType({
     },
   },
   orderings: [
+    orderRankOrdering,
     { title: 'Year, New', name: 'yearDesc', by: [{ field: 'year', direction: 'desc' }] },
   ],
 })
