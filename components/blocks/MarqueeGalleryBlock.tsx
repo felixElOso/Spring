@@ -22,9 +22,13 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
   const hasCompanion = !!img.companionImage
 
   return (
+    // perspective controls how far the flip's near edge projects past the
+    // card's own box. At 1000px a tall card overhangs by up to ~500px, which
+    // the row's horizontal clip then shears off. 4000px keeps a real sense of
+    // depth while holding the worst case to ~65px, inside the row's padding.
     <div
-      className="flex-shrink-0 h-[45vh] md:h-[55vh] xl:h-[70vh] max-h-[800px] rounded-3xl"
-      style={{ perspective: '1000px' }}
+      className="flex-shrink-0 h-[45vh] md:h-[55vh] xl:h-[70vh] max-h-[800px] rounded-media"
+      style={{ perspective: '4000px' }}
     >
       <div
         className={`relative h-full transition-transform duration-500 ease-out ${hasCompanion ? 'hover:[transform:rotateY(180deg)]' : ''}`}
@@ -32,7 +36,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
       >
         {/* Front */}
         <div
-          className="h-full overflow-hidden rounded-3xl"
+          className="h-full overflow-hidden rounded-media"
           style={{ backfaceVisibility: 'hidden' }}
         >
           <Image
@@ -49,7 +53,7 @@ function FlipCard({ img }: { img: MarqueeGalleryImage }) {
         {/* Back */}
         {hasCompanion && (
           <div
-            className="absolute inset-0 h-full overflow-hidden rounded-3xl"
+            className="absolute inset-0 h-full overflow-hidden rounded-media"
             style={{
               backfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
@@ -102,9 +106,22 @@ export function MarqueeGalleryBlock({ block }: Props) {
           const animationName = isReverse ? 'marquee-scroll-reverse' : 'marquee-scroll'
 
           return (
+            // The row must clip horizontally so the duplicated marquee track
+            // doesn't spill across the page. But a card mid-flip rotates in 3D
+            // and its near edge projects well past the card's flat box, so a
+            // tight clip shears the flip. CSS can't hide one axis and show the
+            // other (hidden on one forces auto on the other), so we push the
+            // clip boundary away with vertical padding and cancel the added
+            // height with an equal negative margin — the flip stays whole and
+            // surrounding layout is untouched.
+            //
+            // Sizing: worst-case overhang is at rotateY(90deg) and grows with
+            // card height. With the card's 4000px perspective that peaks at
+            // ~65px for the tallest (800px) card, so py-24 (96px) clears every
+            // breakpoint with room to spare.
             <div
               key={row._key || rowIndex}
-              className="overflow-hidden"
+              className="overflow-hidden py-24 -my-24"
             >
               <div
                 className={`flex gap-10 w-max will-change-transform ${block.pauseOnHover ? '[&:hover]:[animation-play-state:paused]' : ''}`}

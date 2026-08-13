@@ -177,6 +177,24 @@
   }
 }
 
+/* ─── Media corner radius ────────────────────────────────────────────────────── */
+/* Single source of truth for the rounding on media surfaces (hero panels, image
+   and video blocks, galleries, mosaics, marquees). A fixed 24px reads as clean
+   and generous on a 1320px desktop panel, but proportionally far heavier on a
+   ~326px phone image — so the radius steps down on smaller screens. Use this
+   instead of a raw `rounded-3xl` on anything that frames media. */
+@utility rounded-media {
+  border-radius: 0.75rem;                                  /* 12px — mobile  */
+
+  @media (min-width: 768px) {  /* md — iPad portrait  */
+    border-radius: 1rem;                                   /* 16px           */
+  }
+
+  @media (min-width: 1024px) { /* lg — iPad landscape and up */
+    border-radius: 1.5rem;                                 /* 24px — desktop */
+  }
+}
+
 @utility scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

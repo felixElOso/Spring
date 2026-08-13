@@ -33,7 +33,7 @@ export function ProjectHero({
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative w-full overflow-hidden rounded-3xl bg-muted"
+            className="relative w-full overflow-hidden rounded-media bg-muted"
             style={{ aspectRatio: "1320 / 744" }}
           >
             {coverVideoUrl ? (

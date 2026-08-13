@@ -185,7 +185,7 @@ export function Media({
   const content = (
     <>
       {/* ── Media surface ─────────────────────────────────── */}
-      <div className={cn('relative w-full overflow-hidden', needsRatioFallback ? 'aspect-video' : MEDIA_RATIO[aspectRatio], rounded && 'rounded-3xl', stroke && 'border border-foreground/30')}>
+      <div className={cn('relative w-full overflow-hidden', needsRatioFallback ? 'aspect-video' : MEDIA_RATIO[aspectRatio], rounded && 'rounded-media', stroke && 'border border-foreground/30')}>
 
         {/* Image */}
         {type === 'image' && src && aspectRatio === 'auto' && (

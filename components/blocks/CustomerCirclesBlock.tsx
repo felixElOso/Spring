@@ -160,7 +160,7 @@ export function CustomerCirclesBlock({ block, srcFor = defaultSrcFor }: Props) {
         <div
           aria-hidden
           className={`absolute inset-0 bg-pepper-130 ${
-            layout === 'full-bleed' ? '' : 'rounded-3xl'
+            layout === 'full-bleed' ? '' : 'rounded-media'
           }`}
         />
 

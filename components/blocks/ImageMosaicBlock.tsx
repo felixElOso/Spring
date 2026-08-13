@@ -43,7 +43,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
     const afterUrl = urlFor(item.afterImage!).width(width).quality(90).auto('format').fit('max').url()
 
     return (
-      <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''} ${fillHeight ? 'h-full' : ''}`}>
+      <div className={`${rounded ? 'overflow-hidden rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''} ${fillHeight ? 'h-full' : ''}`}>
         <BeforeAfterSlider
           beforeUrl={beforeUrl}
           afterUrl={afterUrl}
@@ -72,7 +72,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
     if (fitContain && isFile) {
       return (
         <div className="flex flex-col">
-          <div className={`overflow-hidden ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
+          <div className={`overflow-hidden ${rounded ? 'rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
             <video
               src={src}
               autoPlay={autoplay}
@@ -96,8 +96,8 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
     // unknowable) — the player letterboxes inside it, so nothing is cut off.
     const boxAspect = fitContain ? 'aspect-video' : aspectRatio === '3/2' ? 'aspect-[3/2]' : 'aspect-[4/3]'
     const surfaceClass = fillHeight && !fitContain
-      ? `relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
-      : `relative w-full overflow-hidden ${boxAspect} ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`
+      ? `relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''}`
+      : `relative w-full overflow-hidden ${boxAspect} ${rounded ? 'rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''}`
 
     return (
       <div className={`flex flex-col ${fillHeight ? 'md:h-full' : ''}`}>
@@ -138,7 +138,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
   if (fillHeightImage) {
     return (
       <div className="flex flex-col md:h-full">
-        <div className={`relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
+        <div className={`relative w-full overflow-hidden aspect-[3/2] md:aspect-auto md:flex-1 ${rounded ? 'rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imgSrc}
@@ -154,7 +154,7 @@ function MosaicItem({ item, width, rounded, sizes, fillHeight }: { item: ImageMo
   }
 
   return (
-    <div className={`${rounded ? 'overflow-hidden rounded-3xl' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
+    <div className={`${rounded ? 'overflow-hidden rounded-media' : ''} ${stroke ? 'border border-foreground/30' : ''}`}>
       <Media
         type="image"
         src={imgSrc}

@@ -56,7 +56,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
     // Embeds can't report a ratio from inside an iframe, so they keep 16:9.
     if (item.videoAspect === 'auto' && isFile) {
       return (
-        <div className="h-full flex-shrink-0 overflow-hidden rounded-3xl">
+        <div className="h-full flex-shrink-0 overflow-hidden rounded-media">
           <video
             src={src}
             autoPlay
@@ -75,7 +75,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
         : ASPECT_CLASS[item.videoAspect ?? '16/9'] ?? ASPECT_CLASS['16/9']
 
     return (
-      <div className={`relative h-full ${aspect} flex-shrink-0 overflow-hidden rounded-3xl`}>
+      <div className={`relative h-full ${aspect} flex-shrink-0 overflow-hidden rounded-media`}>
         {isFile ? (
           <video
             src={src}
@@ -101,7 +101,7 @@ function StripItem({ item }: { item: MediaStripItem }) {
   // ── Image ───────────────────────────────────────────────────────────────────
   if (!item.image) return null
   return (
-    <div className="h-full flex-shrink-0 overflow-hidden rounded-3xl">
+    <div className="h-full flex-shrink-0 overflow-hidden rounded-media">
       <Image
         src={urlFor(item.image).height(1440).quality(90).auto('format').fit('max').url()}
         alt={item.altText || ''}
@@ -145,7 +145,7 @@ export function MediaStripBlock({ block }: Props) {
           strip. When set, the panel's padding provides the horizontal inset, so
           the full-bleed 60px lead-in is dropped to avoid doubling up. Only the
           top is padded — items sit flush with the panel's bottom edge. */}
-      <div className={bgClass ? `${bgClass} rounded-3xl pt-8 md:pt-10` : undefined}>
+      <div className={bgClass ? `${bgClass} rounded-media pt-8 md:pt-10` : undefined}>
         {/* Manual horizontal scroll — drag / swipe / trackpad. No auto-scroll.
             Full-bleed strips get a lead-in / lead-out that matches the site's
             responsive horizontal margin (section-pad), so the first and last

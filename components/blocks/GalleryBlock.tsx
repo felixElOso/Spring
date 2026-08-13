@@ -121,7 +121,7 @@ export function GalleryBlock({ block }: Props) {
     >
       {/* Optional design-system background: a rounded, padded panel behind the
           grid so the color frames the images with a margin. */}
-      <div className={bgClass ? `${bgClass} rounded-3xl p-6 md:p-10` : undefined}>
+      <div className={bgClass ? `${bgClass} rounded-media p-6 md:p-10` : undefined}>
         <div className={gridClass}>
         {block.images?.map((item, i) => {
           // ── Video item ────────────────────────────────────────────────────
